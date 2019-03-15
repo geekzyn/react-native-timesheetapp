@@ -11,7 +11,7 @@ import {
     Icon
 } from 'native-base';
 
-const WithNavigation = WrappedComponent => props => {
+const WithNavigation = (title = "DashBoard") = WrappedComponent => props => {
     debugger;
     return (
         <Container>
@@ -27,7 +27,7 @@ const WithNavigation = WrappedComponent => props => {
                 </Button>
             </Left>
             <Body>
-                <Title>DASHBOARD</Title>
+                <Title>{title}</Title>
             </Body>
             <Right />
         </Header>
