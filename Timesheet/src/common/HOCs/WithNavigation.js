@@ -12,7 +12,7 @@ import {
 } from 'native-base';
 
 const WithNavigation = WrappedComponent => props => {
-
+    debugger;
     return (
         <Container>
             <Header
@@ -20,12 +20,14 @@ const WithNavigation = WrappedComponent => props => {
             iosBarStyle={Platform.OS === 'ios' ? 'dark-content' : 'light-content'}
             >
             <Left>
-                <Button transparent>
+                <Button transparent
+                    onPress={() => props.navigation.toggleDrawer()}
+                >
                     <Icon name='menu' />
                 </Button>
             </Left>
             <Body>
-                <Title>Timesheet</Title>
+                <Title>DASHBOARD</Title>
             </Body>
             <Right />
         </Header>
