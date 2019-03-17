@@ -7,28 +7,14 @@ import Calender from '../calendar/Calender';
 import ProjectTracker from '../calendar/ProjectTracker';
 import SideMenu from './SideMenu';
 import Timesheet from '../dashboard/Timesheet';
-import ProjectList from '../task/ProjectList';
 
-const TaskNavigator = createStackNavigator(
+const DashboardDrawerNavigator = createDrawerNavigator(
   {
     TimeSheet: {
       screen: Timesheet,
       navigationOptions: {
         header: null,
       },
-    },
-    ProjectList: {
-      screen: ProjectList,
-    },
-  },
-
-);
-
-
-const DashboardDrawerNavigator = createDrawerNavigator(
-  {
-    TaskNavigator: {
-      screen: TaskNavigator,
     },
     Profile: {
       screen: Profile,
@@ -53,9 +39,6 @@ const DashboardDrawerNavigator = createDrawerNavigator(
       contentComponent: props => <SideMenu {...props} />
     }
 );
-
-
-
 
 const AppNavigator = createStackNavigator(
     {

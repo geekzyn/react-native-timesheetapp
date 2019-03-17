@@ -1,20 +1,16 @@
 import React, {Component} from 'react';
 // import {Header} from 'react-native-elements';
-import {View, Text, StyleSheet, FlatList, TouchableOpacity} from 'react-native';
+import {View, Text, StyleSheet, FlatList} from 'react-native';
 import WithNavigation from '../../common/HOCs/WithNavigation';
 import CalendarStrip from 'react-native-calendar-strip';
 import ActionButton from 'react-native-action-button';
-import Icon from 'react-native-vector-icons/Ionicons';
 
 class Timesheet extends Component {
 
   constructor(props) {
     super(props);
   }
-  
-    onPress = () => {
-      this.props.navigation.navigate("ProjectList");
-    }
+
     render() {
         return (
           <View style={{flex: 1, flexDirection: 'column'}}>
@@ -57,9 +53,12 @@ class Timesheet extends Component {
                   
                   />
                 
-                    <ActionButton style={{position: 'absolute', alignSelf: 'flex-end', bottom: 0, paddingRight: 100}}
-                      buttonColor="rgba(231,76,60,1)" onPress={this.onPress}
-                      />
+                <View style={{position: 'absolute', alignSelf: 'flex-end', bottom: 100, paddingRight: 100}}>
+                  <ActionButton
+                    buttonColor="rgba(231,76,60,1)"
+                    onPress={() => { console.log("hi")}}
+                    />
+                </View>
               </View>
         )
     }
