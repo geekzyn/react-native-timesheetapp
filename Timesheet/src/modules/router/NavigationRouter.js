@@ -7,7 +7,9 @@ import Calender from '../calendar/Calender';
 import ProjectTracker from '../calendar/ProjectTracker';
 import SideMenu from './SideMenu';
 import Timesheet from '../dashboard/Timesheet';
-import ProjectList from '../task/ProjectList';
+import ProjectList from '../entry/ProjectList';
+import ActivityList from '../entry/ActivityList';
+import TimeEntry from '../entry/TimeEntry';
 
 const TaskNavigator = createStackNavigator(
   {
@@ -20,8 +22,13 @@ const TaskNavigator = createStackNavigator(
     ProjectList: {
       screen: ProjectList,
     },
+    ActivityList: {
+      screen: ActivityList,
+    },
+    TimeEntry: {
+      screen: TimeEntry,
+    },
   },
-
 );
 
 
@@ -79,9 +86,5 @@ const AppNavigator = createStackNavigator(
       initialRouteName: "LoginScreen"
     }
   );
-
-  
-
- 
 
 export default AppNav = createAppContainer(AppNavigator);

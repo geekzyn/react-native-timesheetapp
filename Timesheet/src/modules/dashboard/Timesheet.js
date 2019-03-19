@@ -15,6 +15,7 @@ class Timesheet extends Component {
     onPress = () => {
       this.props.navigation.navigate("ProjectList");
     }
+
     render() {
         return (
           <View style={{flex: 1, flexDirection: 'column'}}>
@@ -58,7 +59,8 @@ class Timesheet extends Component {
                   />
                 
                     <ActionButton style={{position: 'absolute', alignSelf: 'flex-end', bottom: 0, paddingRight: 100}}
-                      buttonColor="rgba(231,76,60,1)" onPress={this.onPress}
+                      buttonColor="rgba(231,76,60,1)" 
+                      onPress={this.onPress}
                       />
               </View>
         )
