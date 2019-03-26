@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, FlatList } from 'react-native';
 import { TouchableHighlight } from 'react-native-gesture-handler';
-import { Container, Header, Item, Input, Icon, Button, Title } from 'native-base';
+import { Container, Header, Item, Input, Icon, Button, Title, Label } from 'native-base';
+import { CellInput, CellGroup, CellDatePicker, CellSlider, CellSwitch, Cell } from 'react-native-cell-components';
 
 class ActivityList extends Component {
 	constructor(props) {
@@ -12,9 +13,22 @@ class ActivityList extends Component {
 		this.props.navigation.navigate('TimeEntry');
 	};
 
+	renderSeparator = () => {
+		return (
+			<View
+				style={{
+					height: 1,
+					width: '100%',
+					backgroundColor: '#CED0CE',
+					marginLeft: '0%'
+				}}
+			/>
+		);
+	};
+
 	render() {
 		return (
-			<Container style={{ backgroundColor: '	#fffefc' }}>
+			<Container style={{ backgroundColor: '#f3f3f3' }}>
 				<Header searchBar rounded>
 					<Item>
 						<Icon name="ios-search" />
@@ -27,6 +41,7 @@ class ActivityList extends Component {
 					</Button>
 				</Header>
 				<FlatList
+					ItemSeparatorComponent={this.renderSeparator}
 					data={[
 						{ activity: 'Task1' },
 						{ activity: 'Task2' },
@@ -38,10 +53,9 @@ class ActivityList extends Component {
 						{ activity: 'Task8' }
 					]}
 					renderItem={({ item }) => {
-						debugger;
 						return (
-							<TouchableOpacity style={{ flex: 1 }} onPress={this.onProjectClicked}>
-								<Text style={styles.header}>{item.activity}</Text>
+							<TouchableOpacity onPress={this.onProjectClicked}>
+								<Label>{item.activity}</Label>
 							</TouchableOpacity>
 						);
 					}}
@@ -65,10 +79,10 @@ const styles = StyleSheet.create({
 		fontSize: 10
 	},
 	header: {
-		padding: 20,
+		padding: 5,
 		height: 80,
 		color: 'black',
-		fontSize: 24,
+		fontSize: 16,
 		fontWeight: 'bold'
 	},
 	subtitle: {

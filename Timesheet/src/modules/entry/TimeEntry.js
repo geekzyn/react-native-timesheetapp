@@ -3,6 +3,7 @@ import { View, Text, TouchableOpacity, StyleSheet, ScrollView } from 'react-nati
 import { CellInput, CellGroup, CellDatePicker, CellSlider, CellSwitch, Cell } from 'react-native-cell-components';
 import Moment from 'moment';
 import { Label } from 'native-base';
+import SelectList from 'react-native-cell-components/components/SelectList';
 
 class TimeEntry extends React.Component {
 	constructor() {

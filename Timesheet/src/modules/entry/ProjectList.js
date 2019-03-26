@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, FlatList } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, FlatList, SectionList } from 'react-native';
 import { TouchableHighlight } from 'react-native-gesture-handler';
-import { Container, Header } from 'native-base';
+import { Container, Header, Input, Icon, Item, Button, Title, Label } from 'native-base';
 
 class ProjectList extends Component {
 	constructor(props) {
@@ -12,79 +12,79 @@ class ProjectList extends Component {
 		this.props.navigation.navigate('ActivityList');
 	};
 
-	render() {
+	renderSeparator = () => {
 		return (
 			<View
 				style={{
-					flexDirection: 'row',
-					flex: 1,
-					alignItems: 'flex-start',
-					justifyContent: 'center',
-					backgroundColor: 'grey'
+					height: 1,
+					width: '100%',
+					backgroundColor: '#CED0CE',
+					marginLeft: '0%'
 				}}
-			>
-				<FlatList
-					data={[
-						{
-							costumerName: 'Customer 1',
-							ProjectList: [ { name: 'P1' }, { name: 'P1' } ]
-						},
-						{ costumerName: 'Customer 2', ProjectList: [ { name: 'P1' }, { name: 'P3' } ] },
-						{ costumerName: 'Customer 3', ProjectList: [ { name: 'P16' }, { name: 'P901' } ] },
-						{ costumerName: 'Customer 4', ProjectList: [ { name: 'P1' }, { name: 'P1' } ] },
-						{ costumerName: 'Customer 5', ProjectList: [ { name: 'P1' }, { name: 'P1' } ] },
-						{ costumerName: 'Customer 6', ProjectList: [ { name: 'P1' }, { name: 'P1' } ] },
-						{ costumerName: 'Customer 7', ProjectList: [ { name: 'P1' }, { name: 'P1' } ] }
+			/>
+		);
+	};
+
+	render() {
+		return (
+			<Container style={{ backgroundColor: '#f3f3f3' }}>
+				<Header searchBar rounded>
+					<Item>
+						<Icon name="ios-search" />
+						<Input placeholder="Search" />
+						<Icon name="ios-people" />
+					</Item>
+
+					<Button transparent>
+						<Text>Search Task</Text>
+					</Button>
+				</Header>
+				<SectionList
+					ItemSeparatorComponent={this.renderSeparator}
+					sections={[
+						{ title: 'Customer 1', data: [ 'Project 1', 'Project 2' ] },
+						{ title: 'Customer 2', data: [ 'Project 3', 'Project 4' ] },
+						{ title: 'Customer 3', data: [ 'Project 3', 'Project 4' ] },
+						{ title: 'Customer 4', data: [ 'Project 3', 'Project 4' ] },
+						{ title: 'Customer 5', data: [ 'Project 3', 'Project 4' ] },
+						{ title: 'Customer 6', data: [ 'Project 3', 'Project 4' ] },
+						{ title: 'Customer 7', data: [ 'Project 3', 'Project 4' ] },
+						{ title: 'Customer 8', data: [ 'Project 3', 'Project 4' ] },
+						{ title: 'Customer 9', data: [ 'Project 3', 'Project 4' ] }
 					]}
 					renderItem={({ item }) => {
 						return (
-							<View style={{ flex: 1, flexDirection: 'row' }}>
-								<View style={{ flexDirection: 'column' }}>
-									<Text style={styles.header}>{item.costumerName}</Text>
-									<FlatList
-										data={item.ProjectList}
-										renderItem={({ project }) => {
-											return (
-												<TouchableOpacity onPress={this.onProjectClicked}>
-													<Text style={styles.subtitle}>Project #1</Text>
-												</TouchableOpacity>
-											);
-										}}
-									/>
-								</View>
+							<TouchableOpacity onPress={this.onProjectClicked}>
+								<Text style={styles.SectionListItemStyle}>{item}</Text>
+							</TouchableOpacity>
+						);
+					}}
+					renderSectionHeader={({ section }) => {
+						return (
+							<View>
+								<Text style={styles.SectionHeaderStyle}>{section.title}</Text>
 							</View>
 						);
 					}}
 				/>
-			</View>
+			</Container>
 		);
 	}
 }
 
 const styles = StyleSheet.create({
-	bigBlue: {
-		color: 'blue',
-		fontWeight: 'bold',
-		fontSize: 30
-	},
-	red: {
-		color: 'red'
-	},
-	item: {
-		color: 'red',
-		fontSize: 10
-	},
-	header: {
-		paddingLeft: 20,
-		height: 80,
+	SectionHeaderStyle: {
+		backgroundColor: '#CCCCCC',
+		fontSize: 15,
+		padding: 5,
 		color: 'black',
-		fontSize: 24,
 		fontWeight: 'bold'
 	},
-	subtitle: {
-		paddingLeft: 30,
-		color: 'black',
-		fontSize: 16
+	SectionListItemStyle: {
+		fontSize: 15,
+		padding: 15,
+		color: '#000',
+		backgroundColor: '#F5F5F5'
 	}
 });
 
