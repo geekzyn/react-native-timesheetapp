@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, FlatList } from 'react-native';
 import { TouchableHighlight } from 'react-native-gesture-handler';
 import { Container, Header, Item, Input, Icon, Button, Title, Label } from 'native-base';
-import { CellInput, CellGroup, CellDatePicker, CellSlider, CellSwitch, Cell } from 'react-native-cell-components';
 
 class ActivityList extends Component {
 	constructor(props) {

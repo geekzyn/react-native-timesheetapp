@@ -12,7 +12,6 @@ import {
 } from 'native-base';
 
 const WithNavigation = (title = "DashBoard") = WrappedComponent => props => {
-    debugger;
     return (
         <Container>
             <Header

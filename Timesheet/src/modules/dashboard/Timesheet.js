@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-// import {Header} from 'react-native-elements';
 import {View, Text, StyleSheet, FlatList, TouchableOpacity} from 'react-native';
 import WithNavigation from '../../common/HOCs/WithNavigation';
 import CalendarStrip from 'react-native-calendar-strip';

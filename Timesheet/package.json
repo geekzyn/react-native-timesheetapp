@@ -7,6 +7,7 @@
     "test": "jest"
   },
   "dependencies": {
+    "immutable": "^4.0.0-rc.12",
     "moment": "^2.24.0",
     "native-base": "^2.12.1",
     "react": "16.6.3",
@@ -17,7 +18,15 @@
     "react-native-cell-components": "^0.4.4",
     "react-native-gesture-handler": "^1.1.0",
     "react-native-vector-icons": "^6.4.1",
-    "react-navigation": "^3.3.2"
+    "react-navigation": "^3.3.2",
+    "react-redux": "^6.0.1",
+    "redux": "^4.0.1",
+    "redux-action-buffer": "^1.2.0",
+    "redux-form": "^5.4.0",
+    "redux-logger": "^3.0.6",
+    "redux-persist": "^5.10.0",
+    "redux-persist-transform-immutable": "^5.0.0",
+    "redux-thunk": "^2.3.0"
   },
   "devDependencies": {
     "babel-core": "7.0.0-bridge.0",
