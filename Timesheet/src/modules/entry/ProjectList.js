@@ -2,10 +2,83 @@ import React, { Component } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, FlatList, SectionList } from 'react-native';
 import { TouchableHighlight } from 'react-native-gesture-handler';
 import { Container, Header, Input, Icon, Item, Button, Title, Label } from 'native-base';
+import { GetProjectAPI, GetCustomerAPI } from '../../services/APIConfig';
+import { INITIAL_HEADERS } from '../../services/RequestBuilder';
+import { callAPI } from '../../services/RequestBuilder';
 
 class ProjectList extends Component {
 	constructor(props) {
 		super(props);
+		this.state = {
+			customerData: [],
+			projectData: [],
+			processedData: []
+		};
+	}
+
+	componentDidMount() {
+		this.fetchCustomerData();
+	}
+
+	fetchCustomerData() {
+		const header = INITIAL_HEADERS;
+		callAPI(GetCustomerAPI, {}, {}, header)
+			.then((response) => {
+				this.setState({
+					isLoading: false,
+					customerData: response.data
+				});
+				this.fetchProjectData();
+			})
+			.catch((error) => {
+				console.log(error);
+			});
+	}
+
+	fetchProjectData() {
+		const header = INITIAL_HEADERS;
+		callAPI(GetProjectAPI, {}, {}, header)
+			.then((response) => {
+				this.setState({
+					isLoading: false,
+					projectData: response.data
+				});
+				this.processDisplayData();
+			})
+			.catch((error) => {
+				console.log(error);
+			});
+	}
+
+	processDisplayData() {
+		let tempData = [];
+		this.state.customerData.forEach((customerRecord) => {
+			let projectList = [];
+			this.state.projectData.filter((project) => {
+				if (customerRecord.id === project.customer_id) {
+					projectList.push(project.name);
+				}
+			});
+			tempData.push({ title: customerRecord.name, data: projectList });
+		});
+		this.setState({ processedData: tempData });
+	}
+
+	// Alert message
+	showAlert(message) {
+		Alert.alert(
+			'TRACKER ALERT',
+			message,
+			[
+				{
+					text: 'Cancel',
+					onPress: () => console.log('Cancel Pressed'),
+					style: 'cancel'
+				},
+				{ text: 'OK', onPress: () => console.log('OK Pressed') }
+			],
+			{ cancelable: true }
+		);
 	}
 
 	onProjectClicked = () => {
@@ -41,17 +114,8 @@ class ProjectList extends Component {
 				</Header>
 				<SectionList
 					ItemSeparatorComponent={this.renderSeparator}
-					sections={[
-						{ title: 'Customer 1', data: [ 'Project 1', 'Project 2' ] },
-						{ title: 'Customer 2', data: [ 'Project 3', 'Project 4' ] },
-						{ title: 'Customer 3', data: [ 'Project 3', 'Project 4' ] },
-						{ title: 'Customer 4', data: [ 'Project 3', 'Project 4' ] },
-						{ title: 'Customer 5', data: [ 'Project 3', 'Project 4' ] },
-						{ title: 'Customer 6', data: [ 'Project 3', 'Project 4' ] },
-						{ title: 'Customer 7', data: [ 'Project 3', 'Project 4' ] },
-						{ title: 'Customer 8', data: [ 'Project 3', 'Project 4' ] },
-						{ title: 'Customer 9', data: [ 'Project 3', 'Project 4' ] }
-					]}
+					//{ title: 'Customer 1', data: [ 'Project 1', 'Project 2' ]
+					sections={this.state.processedData}
 					renderItem={({ item }) => {
 						return (
 							<TouchableOpacity onPress={this.onProjectClicked}>

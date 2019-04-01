@@ -49,7 +49,7 @@ const addQueryParams = (url, query) => {
  */
 export const callAPI = async (config, params, query, header) => {
 	const processedParams = !params ? {} : params;
-
+	debugger;
 	const url = getURL(config.endpoint, query);
 	// Call fetch methods interface
 	debugger;
