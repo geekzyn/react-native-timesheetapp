@@ -22,6 +22,7 @@ class LoginScreen extends Component {
 	//------------------------ Login Helper Methods ----------------------//
 	// #1
 	prepareForLogin() {
+		this.props.navigation.navigate('Dashboard');
 		this.setState({ isLoading: true });
 		if (this.validateParameters()) {
 			this.loginApiCall();
@@ -109,7 +110,7 @@ class LoginScreen extends Component {
 					<View style={{ flexDirection: 'row', backgroundColor: '#0f56b8' }}>
 						<TextInput
 							style={styles.loginTextField}
-							placeholder="Email"
+							placeholder="UserName"
 							placeholderTextColor={'#738382'}
 							onChangeText={(text) => this.setState({ username: text })}
 						/>

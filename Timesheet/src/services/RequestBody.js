@@ -5,6 +5,12 @@ const RequestBody = {
 			password: props.password
 		};
 		return { params };
+	},
+
+	activities: (props) => {
+		const prams = {
+			project_id: props.selectedProjectId
+		};
 	}
 };
 

@@ -2,9 +2,11 @@ import React, { Component } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, FlatList, SectionList } from 'react-native';
 import { TouchableHighlight } from 'react-native-gesture-handler';
 import { Container, Header, Input, Icon, Item, Button, Title, Label } from 'native-base';
-import { GetProjectAPI, GetCustomerAPI } from '../../services/APIConfig';
+import { GetProjectAPI, GetCustomerAPI, GetActivitiesAPI } from '../../services/APIConfig';
 import { INITIAL_HEADERS } from '../../services/RequestBuilder';
 import { callAPI } from '../../services/RequestBuilder';
+import RequestBody from '../../services/RequestBody';
+import { tsThisType } from '@babel/types';
 
 class ProjectList extends Component {
 	constructor(props) {
@@ -12,7 +14,9 @@ class ProjectList extends Component {
 		this.state = {
 			customerData: [],
 			projectData: [],
-			processedData: []
+			processedData: [],
+			activityData: [],
+			selectedProjectId: 0
 		};
 	}
 
@@ -22,12 +26,14 @@ class ProjectList extends Component {
 
 	fetchCustomerData() {
 		const header = INITIAL_HEADERS;
+		debugger;
 		callAPI(GetCustomerAPI, {}, {}, header)
 			.then((response) => {
 				this.setState({
 					isLoading: false,
 					customerData: response.data
 				});
+				debugger;
 				this.fetchProjectData();
 			})
 			.catch((error) => {
@@ -37,12 +43,14 @@ class ProjectList extends Component {
 
 	fetchProjectData() {
 		const header = INITIAL_HEADERS;
+		debugger;
 		callAPI(GetProjectAPI, {}, {}, header)
 			.then((response) => {
 				this.setState({
 					isLoading: false,
 					projectData: response.data
 				});
+				debugger;
 				this.processDisplayData();
 			})
 			.catch((error) => {
@@ -56,15 +64,33 @@ class ProjectList extends Component {
 			let projectList = [];
 			this.state.projectData.filter((project) => {
 				if (customerRecord.id === project.customer_id) {
-					projectList.push(project.name);
+					projectList.push({ name: project.name, id: project.id });
 				}
 			});
 			tempData.push({ title: customerRecord.name, data: projectList });
 		});
+		debugger;
 		this.setState({ processedData: tempData });
 	}
 
-	// Alert message
+	activitiesCallAPI() {
+		const { params, query } = RequestBody.activities(this.state);
+		const header = INITIAL_HEADERS;
+		debugger;
+		callAPI(GetActivitiesAPI, params, query, header)
+			.then((response) => {
+				this.setState({
+					isLoading: false,
+					activityData: response.data
+				});
+				this.props.navigation.navigate('ActivityList', this.state.activityData);
+			})
+			.catch((error) => {
+				console.log(error);
+			});
+	}
+
+	//Alert message
 	showAlert(message) {
 		Alert.alert(
 			'TRACKER ALERT',
@@ -81,8 +107,15 @@ class ProjectList extends Component {
 		);
 	}
 
-	onProjectClicked = () => {
-		this.props.navigation.navigate('ActivityList');
+	onProjectClicked = (props) => {
+		debugger;
+		this.props.navigation.navigate('ActivityList', [
+			{ activity: 'Task1' },
+			{ activity: 'Task2' },
+			{ activity: 'Task3' }
+		]);
+		this.setState({ selectedProjectId: props });
+		this.activitiesCallAPI();
 	};
 
 	renderSeparator = () => {
@@ -114,12 +147,13 @@ class ProjectList extends Component {
 				</Header>
 				<SectionList
 					ItemSeparatorComponent={this.renderSeparator}
-					//{ title: 'Customer 1', data: [ 'Project 1', 'Project 2' ]
+					//{ title: 'Customer 1', data: [ {name:'Project 1', id: "id"}, {name:'Project 1', id: "id"}]
 					sections={this.state.processedData}
 					renderItem={({ item }) => {
+						this.setState;
 						return (
-							<TouchableOpacity onPress={this.onProjectClicked}>
-								<Text style={styles.SectionListItemStyle}>{item}</Text>
+							<TouchableOpacity onPress={this.onProjectClicked.bind(this, item.id)}>
+								<Text style={styles.SectionListItemStyle}>{item.name}</Text>
 							</TouchableOpacity>
 						);
 					}}

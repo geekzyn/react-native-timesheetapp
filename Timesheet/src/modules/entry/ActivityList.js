@@ -6,6 +6,11 @@ import { Container, Header, Item, Input, Icon, Button, Title, Label } from 'nati
 class ActivityList extends Component {
 	constructor(props) {
 		super(props);
+		this.state = {
+			activityData: this.props.navigation.state.params
+		};
+		debugger;
+		console.log(this.props.navigation);
 	}
 
 	onProjectClicked = () => {
@@ -41,16 +46,7 @@ class ActivityList extends Component {
 				</Header>
 				<FlatList
 					ItemSeparatorComponent={this.renderSeparator}
-					data={[
-						{ activity: 'Task1' },
-						{ activity: 'Task2' },
-						{ activity: 'Task3' },
-						{ activity: 'Task4' },
-						{ activity: 'Task5' },
-						{ activity: 'Task6' },
-						{ activity: 'Task7' },
-						{ activity: 'Task8' }
-					]}
+					data={this.state.activityData}
 					renderItem={({ item }) => {
 						return (
 							<TouchableOpacity onPress={this.onProjectClicked}>
