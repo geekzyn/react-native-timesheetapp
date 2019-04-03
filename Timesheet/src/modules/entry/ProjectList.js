@@ -6,7 +6,6 @@ import { GetProjectAPI, GetCustomerAPI, GetActivitiesAPI } from '../../services/
 import { INITIAL_HEADERS } from '../../services/RequestBuilder';
 import { callAPI } from '../../services/RequestBuilder';
 import RequestBody from '../../services/RequestBody';
-import { tsThisType } from '@babel/types';
 
 class ProjectList extends Component {
 	constructor(props) {

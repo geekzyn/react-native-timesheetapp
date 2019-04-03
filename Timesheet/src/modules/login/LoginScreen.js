@@ -6,6 +6,9 @@ import { Toast } from 'native-base';
 import RequestBody from '../../services/RequestBody';
 import { INITIAL_HEADERS } from '../../services/RequestBuilder';
 import AppStorage from '../../utils/AppAsyncStorage';
+import { Spinner } from '../../utils/Spinner';
+import { requestLogin } from '../login/LoginAction';
+import { connect } from 'react-redux';
 
 class LoginScreen extends Component {
 	constructor(props) {
@@ -22,17 +25,12 @@ class LoginScreen extends Component {
 	//------------------------ Login Helper Methods ----------------------//
 	// #1
 	prepareForLogin() {
-		this.props.navigation.navigate('Dashboard');
-		this.setState({ isLoading: true });
 		if (this.validateParameters()) {
-			this.loginApiCall();
+			const params = { state: this.state, navigation: this.props.navigation };
+			requestLogin(params);
 		} else {
 			this.showAlert('Please Enter Username and Password Both.');
 		}
-
-		this.setState({
-			isLoading: false
-		});
 	}
 	// #2
 	validateParameters() {
@@ -44,29 +42,29 @@ class LoginScreen extends Component {
 		return isValid;
 	}
 	// #3
-	loginApiCall() {
-		const { params, query } = RequestBody.login(this.state);
-		const header = INITIAL_HEADERS;
-		debugger;
-		callAPI(LoginAPI, params, query, header)
-			.then((response) => {
-				const { message, access_token } = response;
-				if (message != null && message !== undefined) {
-					this.showAlert(message);
-				} else {
-					this.setState({
-						isLoading: false,
-						accessToken: access_token
-					});
-					this.showAlert('response');
-					AppStorage.setValue('accessToken', access_token);
-					this.props.navigation.navigate('Dashboard');
-				}
-			})
-			.catch((error) => {
-				console.log(error);
-			});
-	}
+	// loginApiCall() {
+	// 	const { params, query } = RequestBody.login(this.state);
+	// 	const header = INITIAL_HEADERS;
+	// 	debugger;
+	// 	callAPI(LoginAPI, params, query, header)
+	// 		.then((response) => {
+	// 			const {message, access_token} = response;
+	// 			if (message != null && message !== undefined) {
+	// 				this.showAlert(message);
+	// 			}  else {
+	// 				this.setState({
+	// 					isLoading: false,
+	// 					accessToken: access_token
+	// 				});
+	// 				this.showAlert('response');
+	// 				AppStorage.setValue('accessToken', access_token);
+	// 				this.props.navigation.navigate('Dashboard');
+	// 			}
+	// 		})
+	// 		.catch((error) => {
+	// 			console.log(error);
+	// 		});
+	// }
 	//------ Login Helper methods End ---//
 
 	//Alert message
@@ -99,9 +97,9 @@ class LoginScreen extends Component {
 	// }
 
 	render() {
-		// if (this.state.isLoading) {
-		// 	return (<ActivityIndicator/>);
-		// }
+		if (this.props.loading) {
+			return <Spinner size="large" />;
+		}
 		return (
 			<View style={{ flex: 1, alignItems: 'center', backgroundColor: '#305578' }}>
 				<Text style={{ marginTop: 100, fontSize: 30, fontWeight: '800', color: 'white' }}>ProjectTracker</Text>
@@ -135,6 +133,12 @@ class LoginScreen extends Component {
 	}
 }
 
+const mapStateToProps = (state) => {
+	debugger;
+	const { loading, isConnected } = state.loginReducers;
+	return { loading, isConnected };
+};
+
 const styles = StyleSheet.create({
 	loginTextField: {
 		height: 50,
@@ -157,4 +161,4 @@ const styles = StyleSheet.create({
 	}
 });
 
-export default LoginScreen;
+export default connect(mapStateToProps, { requestLogin })(LoginScreen);
