@@ -22,12 +22,15 @@ export const requestLogin = (props) => {
 		callAPI(LoginAPI, params, query, header)
 			.then((response) => {
 				const { message, access_token } = response;
+				debugger;
 				if (message != null && message !== undefined) {
 					requestFail(dispatch, message);
 				} else {
 					AppStorage.setValue('accessToken', access_token);
-					this.showAlert('Login Success');
-					resquestSuccess(dispatch, access_token);
+					dispatch({
+						type: LOGIN_SUCCESS,
+						payload: access_token
+					});
 					navigation.navigate('Dashboard');
 				}
 			})

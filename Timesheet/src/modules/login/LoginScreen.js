@@ -15,8 +15,8 @@ class LoginScreen extends Component {
 		super(props);
 		this.state = {
 			isLoading: false,
-			password: '',
-			username: '',
+			password: 'secret',
+			username: 'john@doe.com',
 			response: '',
 			accessToken: ''
 		};
@@ -27,7 +27,7 @@ class LoginScreen extends Component {
 	prepareForLogin() {
 		if (this.validateParameters()) {
 			const params = { state: this.state, navigation: this.props.navigation };
-			requestLogin(params);
+			this.props.requestLogin(params);
 		} else {
 			this.showAlert('Please Enter Username and Password Both.');
 		}

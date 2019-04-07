@@ -6,6 +6,7 @@ import { GetProjectAPI, GetCustomerAPI, GetActivitiesAPI } from '../../services/
 import { INITIAL_HEADERS } from '../../services/RequestBuilder';
 import { callAPI } from '../../services/RequestBuilder';
 import RequestBody from '../../services/RequestBody';
+import { connect } from 'react-redux';
 
 class ProjectList extends Component {
 	constructor(props) {
@@ -17,15 +18,20 @@ class ProjectList extends Component {
 			activityData: [],
 			selectedProjectId: 0
 		};
+		debugger;
 	}
 
 	componentDidMount() {
 		this.fetchCustomerData();
 	}
 
-	fetchCustomerData() {
-		const header = INITIAL_HEADERS;
+	componentWillReceiveProps(props) {
 		debugger;
+	}
+
+	fetchCustomerData() {
+		var header = INITIAL_HEADERS;
+		header['Authorization'] = 'Bearer ' + this.props.accessToken;
 		callAPI(GetCustomerAPI, {}, {}, header)
 			.then((response) => {
 				this.setState({
@@ -41,7 +47,8 @@ class ProjectList extends Component {
 	}
 
 	fetchProjectData() {
-		const header = INITIAL_HEADERS;
+		var header = INITIAL_HEADERS;
+		header['Authorization'] = 'Bearer ' + this.props.accessToken;
 		debugger;
 		callAPI(GetProjectAPI, {}, {}, header)
 			.then((response) => {
@@ -72,17 +79,21 @@ class ProjectList extends Component {
 		this.setState({ processedData: tempData });
 	}
 
-	activitiesCallAPI() {
-		const { params, query } = RequestBody.activities(this.state);
-		const header = INITIAL_HEADERS;
+	activitiesCallAPI(selectedProject) {
+		var header = INITIAL_HEADERS;
+		header['Authorization'] = 'Bearer ' + this.props.accessToken;
+		const { params, query } = RequestBody.activities(selectedProject);
 		debugger;
 		callAPI(GetActivitiesAPI, params, query, header)
 			.then((response) => {
 				this.setState({
 					isLoading: false,
-					activityData: response.data
+					activityData: response
 				});
-				this.props.navigation.navigate('ActivityList', this.state.activityData);
+				this.props.navigation.navigate('ActivityList', {
+					activityData: this.state.activityData,
+					project: selectedProject.name
+				});
 			})
 			.catch((error) => {
 				console.log(error);
@@ -106,15 +117,11 @@ class ProjectList extends Component {
 		);
 	}
 
-	onProjectClicked = (props) => {
+	onProjectClicked = (selectedProject) => {
 		debugger;
-		this.props.navigation.navigate('ActivityList', [
-			{ activity: 'Task1' },
-			{ activity: 'Task2' },
-			{ activity: 'Task3' }
-		]);
-		this.setState({ selectedProjectId: props });
-		this.activitiesCallAPI();
+
+		this.setState({ selectedProjectId: selectedProject.id });
+		this.activitiesCallAPI(selectedProject);
 	};
 
 	renderSeparator = () => {
@@ -151,7 +158,7 @@ class ProjectList extends Component {
 					renderItem={({ item }) => {
 						this.setState;
 						return (
-							<TouchableOpacity onPress={this.onProjectClicked.bind(this, item.id)}>
+							<TouchableOpacity onPress={this.onProjectClicked.bind(this, item)}>
 								<Text style={styles.SectionListItemStyle}>{item.name}</Text>
 							</TouchableOpacity>
 						);
@@ -169,6 +176,12 @@ class ProjectList extends Component {
 	}
 }
 
+const mapStateToProps = (state) => {
+	debugger;
+	const { accessToken } = state.loginReducers;
+	return { accessToken };
+};
+
 const styles = StyleSheet.create({
 	SectionHeaderStyle: {
 		backgroundColor: '#CCCCCC',
@@ -185,4 +198,4 @@ const styles = StyleSheet.create({
 	}
 });
 
-export default ProjectList;
+export default connect(mapStateToProps, {})(ProjectList);

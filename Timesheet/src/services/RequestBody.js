@@ -8,9 +8,10 @@ const RequestBody = {
 	},
 
 	activities: (props) => {
-		const prams = {
-			project_id: props.selectedProjectId
+		const params = {
+			project_id: props.id
 		};
+		return { params };
 	}
 };
 

@@ -6,10 +6,15 @@ import { Label } from 'native-base';
 import SelectList from 'react-native-cell-components/components/SelectList';
 
 class TimeEntry extends React.Component {
-	constructor() {
-		super();
+	constructor(props) {
+		super(props);
+		debugger;
+		const { activity, project } = this.props.navigation.state.params;
 		this.state = {
-			date: new Date()
+			activityFromTime: new Date(),
+			activityToTime: new Date(),
+			activity,
+			project
 		};
 	}
 
@@ -19,6 +24,14 @@ class TimeEntry extends React.Component {
 		});
 	};
 
+	onProjectClicked = () => {
+		this.props.navigation.replace('ProjectList');
+	};
+
+	onActivityClicked = () => {
+		this.props.navigation.pop();
+	};
+
 	render() {
 		return (
 			<View style={styles.container}>
@@ -26,15 +39,15 @@ class TimeEntry extends React.Component {
 					<ScrollView>
 						<CellGroup>
 							<Cell>
-								<TouchableOpacity>
+								<TouchableOpacity onPress={this.onProjectClicked.bind(this)}>
 									<Label>PROJECT</Label>
-									<Label>Project #1</Label>
+									<Label>{this.state.project}</Label>
 								</TouchableOpacity>
 							</Cell>
 							<Cell>
-								<TouchableOpacity>
+								<TouchableOpacity onPress={this.onActivityClicked.bind(this)}>
 									<Label>ACTIVITY</Label>
-									<Label>Activity #1</Label>
+									<Label>{this.state.activity.name}</Label>
 								</TouchableOpacity>
 							</Cell>
 							<CellInput title="NOTES" multiline autoResize rows={4} />
@@ -52,16 +65,16 @@ class TimeEntry extends React.Component {
 								icon="access-time"
 								title="FROM"
 								mode="time"
-								date={this.state.date}
-								value={Moment(this.state.date).format('LT')}
+								date={this.state.activityFromTime}
+								value={Moment(this.state.activityFromTime).format('LT')}
 								onDateSelected={this.handleOnDateSelected}
 							/>
 							<CellDatePicker
 								icon="access-time"
 								title="TO"
 								mode="time"
-								date={this.state.date}
-								value={Moment(this.state.date).format('LT')}
+								date={this.state.activityToTime}
+								value={Moment(this.state.activityToTime).format('LT')}
 								onDateSelected={this.handleOnDateSelected}
 							/>
 							<Cell title="DURATION" icon="update">

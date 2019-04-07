@@ -6,15 +6,37 @@ import { Container, Header, Item, Input, Icon, Button, Title, Label } from 'nati
 class ActivityList extends Component {
 	constructor(props) {
 		super(props);
-		this.state = {
-			activityData: this.props.navigation.state.params
-		};
 		debugger;
+		const { activityData, project } = this.props.navigation.state.params;
+		this.state = {
+			activityData,
+			project
+		};
 		console.log(this.props.navigation);
 	}
 
-	onProjectClicked = () => {
-		this.props.navigation.navigate('TimeEntry');
+	// componentWillReceiveProps(props) {
+	// 	debugger;
+	// }
+
+	componentWillUpdate(props) {
+		debugger;
+		const { activityData, project } = this.props.navigation.state.params;
+		this.setState({
+			activityData,
+			project
+		});
+	}
+
+	// componentWillMount() {
+	// 	debugger;
+	// }
+
+	componentDidMount() {}
+
+	onActivityClicked = (props) => {
+		debugger;
+		this.props.navigation.navigate('TimeEntry', props);
 	};
 
 	renderSeparator = () => {
@@ -49,8 +71,13 @@ class ActivityList extends Component {
 					data={this.state.activityData}
 					renderItem={({ item }) => {
 						return (
-							<TouchableOpacity onPress={this.onProjectClicked}>
-								<Label>{item.activity}</Label>
+							<TouchableOpacity
+								onPress={this.onActivityClicked.bind(this, {
+									activity: item,
+									project: this.state.project
+								})}
+							>
+								<Label>{item.name}</Label>
 							</TouchableOpacity>
 						);
 					}}
