@@ -1,5 +1,5 @@
 // Environment URLs
-export const devBaseURL = 'http://10.0.2.2:8000';
+export const devBaseURL = 'http://104.248.134.120';
 
 /*This is just and example how to handle multiple server staging enviroment.
 Can comment out the below enviroment as its same.

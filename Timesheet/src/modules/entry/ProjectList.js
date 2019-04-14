@@ -16,17 +16,13 @@ class ProjectList extends Component {
 			projectData: [],
 			processedData: [],
 			activityData: [],
-			selectedProjectId: 0
+			selectedProjectId: null
 		};
 		debugger;
 	}
 
 	componentDidMount() {
 		this.fetchCustomerData();
-	}
-
-	componentWillReceiveProps(props) {
-		debugger;
 	}
 
 	fetchCustomerData() {

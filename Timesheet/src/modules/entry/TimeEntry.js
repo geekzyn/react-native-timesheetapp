@@ -1,11 +1,12 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, ScrollView, Alert } from 'react-native';
 import { CellInput, CellGroup, CellDatePicker, CellSlider, CellSwitch, Cell } from 'react-native-cell-components';
 import Moment from 'moment';
-import { Label } from 'native-base';
+import { Label, Button } from 'native-base';
 import SelectList from 'react-native-cell-components/components/SelectList';
 
 class TimeEntry extends React.Component {
+
 	constructor(props) {
 		super(props);
 		debugger;
@@ -14,19 +15,53 @@ class TimeEntry extends React.Component {
 			activityFromTime: new Date(),
 			activityToTime: new Date(),
 			activity,
-			project
+			project,
+			duration: 0
 		};
 	}
 
+	//Adding Custom Navigation Headers
+	static navigationOptions = ({ navigation }) => {
+		return {
+		headerRight: (
+			<TouchableOpacity onPress={navigation.getParam('onSaveData')}>
+				<Label style={{marginRight: 10, color: 'green'}}>SAVE</Label>
+			</TouchableOpacity>
+		  ),
+		headerLeft: (
+			<TouchableOpacity onPress={navigation.getParam('onCancelPressed')}>
+				<Label style={{marginLeft: 10, color: 'red'}}>CANCEL</Label>
+			</TouchableOpacity>
+		  )
+		};
+	};
+
+	componentDidMount() {
+		this.props.navigation.setParams({ onSaveData: this.onSaveData, onCancelPressed: this.onCancelPressed });
+	  }
+
 	handleOnDateSelected = (date) => {
 		this.setState({
-			date
+			date,
+			duration: ((this.state.activityToTime - this.state.activityFromTime) / (1000 * 60 * 60)) % 24
 		});
 	};
 
 	onProjectClicked = () => {
-		this.props.navigation.replace('ProjectList');
+		this.props.navigation.navigate('ProjectList');
 	};
+
+	onSaveData = () => {
+		Alert.alert(
+			'TRACKER ALERT',
+			"Do you want to save.",
+		);
+	}
+
+	onCancelPressed = () => {
+		debugger;
+		this.props.navigation.pop();
+	}
 
 	onActivityClicked = () => {
 		this.props.navigation.pop();
@@ -78,7 +113,7 @@ class TimeEntry extends React.Component {
 								onDateSelected={this.handleOnDateSelected}
 							/>
 							<Cell title="DURATION" icon="update">
-								<Text>02:00</Text>
+								<Text>{this.state.duration}</Text>
 							</Cell>
 						</CellGroup>
 					</ScrollView>
