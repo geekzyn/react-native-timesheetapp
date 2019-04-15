@@ -9,7 +9,11 @@ const INITIAL_STATE = {
 export default (state = INITIAL_STATE, action) => {
 	switch (action.type) {
 		case LOGIN_SUCCESS:
-			return { ...state, accessToken: action.payload };
+			return {
+				...state,
+				accessToken: action.payload,
+				loading: false
+			};
 		case REQUEST_FAIL_ACTION:
 			debugger;
 			return {

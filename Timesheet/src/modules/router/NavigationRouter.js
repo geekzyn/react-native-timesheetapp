@@ -10,7 +10,7 @@ import Timesheet from '../dashboard/Timesheet';
 import ProjectList from '../entry/ProjectList';
 import ActivityList from '../entry/ActivityList';
 import TimeEntry from '../entry/TimeEntry';
-import {Text} from 'react-native';
+import { Text } from 'react-native';
 import { Button } from 'native-base';
 
 const TaskNavigator = createStackNavigator({
@@ -27,7 +27,7 @@ const TaskNavigator = createStackNavigator({
 		screen: ActivityList
 	},
 	TimeEntry: {
-		screen: TimeEntry,
+		screen: TimeEntry
 	}
 });
 

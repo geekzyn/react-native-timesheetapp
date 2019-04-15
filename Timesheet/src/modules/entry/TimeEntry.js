@@ -3,10 +3,11 @@ import { View, Text, TouchableOpacity, StyleSheet, ScrollView, Alert } from 'rea
 import { CellInput, CellGroup, CellDatePicker, CellSlider, CellSwitch, Cell } from 'react-native-cell-components';
 import Moment from 'moment';
 import { Label, Button } from 'native-base';
-import SelectList from 'react-native-cell-components/components/SelectList';
+import Utils from '../../utils/Utils';
+import { saveTimeEntry } from '../entry/EntryAction';
+import { connect } from 'react-redux';
 
 class TimeEntry extends React.Component {
-
 	constructor(props) {
 		super(props);
 		debugger;
@@ -16,29 +17,30 @@ class TimeEntry extends React.Component {
 			activityToTime: new Date(),
 			activity,
 			project,
-			duration: 0
+			duration: 0,
+			description: ''
 		};
 	}
 
 	//Adding Custom Navigation Headers
 	static navigationOptions = ({ navigation }) => {
 		return {
-		headerRight: (
-			<TouchableOpacity onPress={navigation.getParam('onSaveData')}>
-				<Label style={{marginRight: 10, color: 'green'}}>SAVE</Label>
-			</TouchableOpacity>
-		  ),
-		headerLeft: (
-			<TouchableOpacity onPress={navigation.getParam('onCancelPressed')}>
-				<Label style={{marginLeft: 10, color: 'red'}}>CANCEL</Label>
-			</TouchableOpacity>
-		  )
+			headerRight: (
+				<TouchableOpacity onPress={navigation.getParam('onSaveData')}>
+					<Label style={{ marginRight: 10, color: 'green' }}>SAVE</Label>
+				</TouchableOpacity>
+			),
+			headerLeft: (
+				<TouchableOpacity onPress={navigation.getParam('onCancelPressed')}>
+					<Label style={{ marginLeft: 10, color: 'red' }}>CANCEL</Label>
+				</TouchableOpacity>
+			)
 		};
 	};
 
 	componentDidMount() {
 		this.props.navigation.setParams({ onSaveData: this.onSaveData, onCancelPressed: this.onCancelPressed });
-	  }
+	}
 
 	handleOnDateSelected = (date) => {
 		this.setState({
@@ -47,26 +49,39 @@ class TimeEntry extends React.Component {
 		});
 	};
 
+	// Navigation on project and activity click
 	onProjectClicked = () => {
 		this.props.navigation.navigate('ProjectList');
 	};
-
-	onSaveData = () => {
-		Alert.alert(
-			'TRACKER ALERT',
-			"Do you want to save.",
-		);
-	}
-
-	onCancelPressed = () => {
-		debugger;
-		this.props.navigation.pop();
-	}
 
 	onActivityClicked = () => {
 		this.props.navigation.pop();
 	};
 
+	// Save and Cancle Action
+	onSaveData = () => {
+		if (this.validateEntries() === false) {
+			Alert.alert('TRACKER ALERT', 'Please fill the details.');
+			return;
+		}
+		this.props.saveTimeEntry({ state: this.state, navigation: this.props.navigation });
+	};
+
+	onCancelPressed = () => {
+		debugger;
+		this.props.navigation.pop();
+	};
+
+	validateEntries() {
+		var { activityFromTime, activityToTime, description, project } = this.state;
+
+		if (Utils.isEmptyOrNull(description)) {
+			return false;
+		}
+		return true;
+	}
+
+	// UI
 	render() {
 		return (
 			<View style={styles.container}>
@@ -85,7 +100,13 @@ class TimeEntry extends React.Component {
 									<Label>{this.state.activity.name}</Label>
 								</TouchableOpacity>
 							</Cell>
-							<CellInput title="NOTES" multiline autoResize rows={4} />
+							<CellInput
+								title="NOTES"
+								onChangeText={(description) => this.setState({ description })}
+								multiline
+								autoResize
+								rows={4}
+							/>
 						</CellGroup>
 						<CellGroup>
 							<CellDatePicker
@@ -130,4 +151,4 @@ const styles = StyleSheet.create({
 	}
 });
 
-export default TimeEntry;
+export default connect(null, { saveTimeEntry })(TimeEntry);

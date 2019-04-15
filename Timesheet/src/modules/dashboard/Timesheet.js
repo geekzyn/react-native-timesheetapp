@@ -11,6 +11,7 @@ class Timesheet extends Component {
 	}
 
 	onPress = () => {
+		debugger;
 		this.props.navigation.navigate('ProjectList');
 	};
 
@@ -114,7 +115,7 @@ class Timesheet extends Component {
 				<ActionButton
 					style={{ position: 'absolute', alignSelf: 'flex-end', bottom: 0, paddingRight: 100 }}
 					buttonColor="rgba(231,76,60,1)"
-					onPress={this.onPress}
+					onPress={this.onPress.bind(this)}
 				/>
 			</View>
 		);

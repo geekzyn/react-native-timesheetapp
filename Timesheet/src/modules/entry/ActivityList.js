@@ -21,6 +21,15 @@ class ActivityList extends Component {
 
 	componentWillUpdate(props) {
 		debugger;
+		// const { activityData, project } = this.props.navigation.state.params;
+		// this.setState({
+		// 	activityData,
+		// 	project
+		// });
+	}
+
+	componentDidMount() {
+		debugger;
 		const { activityData, project } = this.props.navigation.state.params;
 		this.setState({
 			activityData,
