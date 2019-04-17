@@ -56,7 +56,7 @@ export const callAPI = async (config, params, query, header) => {
 	debugger;
 	try {
 		const parsedData = await Request.send(url, header, config.method, processedParams);
-
+		debugger;
 		return parsedData;
 	} catch (err) {
 		debugger;

@@ -2,17 +2,12 @@ import React, { Component } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, FlatList } from 'react-native';
 import { TouchableHighlight } from 'react-native-gesture-handler';
 import { Container, Header, Item, Input, Icon, Button, Title, Label } from 'native-base';
+import {connect} from 'react-redux';
 
 class ActivityList extends Component {
 	constructor(props) {
 		super(props);
 		debugger;
-		const { activityData, project } = this.props.navigation.state.params;
-		this.state = {
-			activityData,
-			project
-		};
-		console.log(this.props.navigation);
 	}
 
 	// componentWillReceiveProps(props) {
@@ -29,12 +24,6 @@ class ActivityList extends Component {
 	}
 
 	componentDidMount() {
-		debugger;
-		const { activityData, project } = this.props.navigation.state.params;
-		this.setState({
-			activityData,
-			project
-		});
 	}
 
 	// componentWillMount() {
@@ -77,7 +66,7 @@ class ActivityList extends Component {
 				</Header>
 				<FlatList
 					ItemSeparatorComponent={this.renderSeparator}
-					data={this.state.activityData}
+					data={this.props.activityList}
 					renderItem={({ item }) => {
 						return (
 							<TouchableOpacity
@@ -94,6 +83,12 @@ class ActivityList extends Component {
 			</Container>
 		);
 	}
+}
+
+const mapStateToProps = (state) => {
+	debugger;
+	const { activityList  } = state.timeEntryReducer;
+	return { activityList };
 }
 
 const styles = StyleSheet.create({
@@ -122,4 +117,4 @@ const styles = StyleSheet.create({
 	}
 });
 
-export default ActivityList;
+export default connect(mapStateToProps, {})(ActivityList);

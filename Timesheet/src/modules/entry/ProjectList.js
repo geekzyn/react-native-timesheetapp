@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, FlatList, SectionList } from 'react-native';
-import { TouchableHighlight } from 'react-native-gesture-handler';
 import { Container, Header, Input, Icon, Item, Button, Title, Label } from 'native-base';
-import { GetProjectAPI, GetCustomerAPI, GetActivitiesAPI } from '../../services/APIConfig';
+import { GetActivitiesAPI } from '../../services/APIConfig';
 import { INITIAL_HEADERS } from '../../services/RequestBuilder';
 import { callAPI } from '../../services/RequestBuilder';
 import RequestBody from '../../services/RequestBody';
 import { connect } from 'react-redux';
+import {fetchProjectData, fetchCustomerData, fetchActivities} from './EntryAction';
+import AppStorage from '../../utils/AppAsyncStorage';
 
 class ProjectList extends Component {
 	constructor(props) {
@@ -22,78 +23,37 @@ class ProjectList extends Component {
 	}
 
 	componentDidMount() {
-		this.fetchCustomerData();
-	}
-
-	fetchCustomerData() {
-		var header = INITIAL_HEADERS;
-		header['Authorization'] = 'Bearer ' + this.props.accessToken;
-		callAPI(GetCustomerAPI, {}, {}, header)
-			.then((response) => {
-				this.setState({
-					isLoading: false,
-					customerData: response.data
-				});
-				debugger;
-				this.fetchProjectData();
-			})
-			.catch((error) => {
-				console.log(error);
-			});
-	}
-
-	fetchProjectData() {
-		var header = INITIAL_HEADERS;
-		header['Authorization'] = 'Bearer ' + this.props.accessToken;
 		debugger;
-		callAPI(GetProjectAPI, {}, {}, header)
-			.then((response) => {
-				this.setState({
-					isLoading: false,
-					projectData: response.data
-				});
-				debugger;
-				this.processDisplayData();
-			})
-			.catch((error) => {
-				console.log(error);
-			});
+		if (this.props.customerList == null || this.props.customerList.length == 0) {
+			this.props.fetchCustomerData(this.props.accessToken);
+		}
+	}
+
+	componentWillReceiveProps(nextProps){
+		debugger;
+		if (typeof nextProps.customerList !== 'undefined' && nextProps.customerList !== null &&
+		nextProps.customerList.length > 0 && this.props.projectList.length == 0) {
+			debugger;
+			this.props.fetchProjectData(this.props.accessToken);
+		} else if (this.props.projectList.length > 0 && this.state.processedData.length == 0) {
+			this.processDisplayData();
+		}
+
 	}
 
 	processDisplayData() {
 		let tempData = [];
-		this.state.customerData.forEach((customerRecord) => {
-			let projectList = [];
-			this.state.projectData.filter((project) => {
+		const {customerList, projectList} = this.props;
+			customerList.forEach((customerRecord) => {
+			let tempProjectList = [];
+			projectList.filter((project) => {
 				if (customerRecord.id === project.customer_id) {
-					projectList.push({ name: project.name, id: project.id });
+					tempProjectList.push({ name: project.name, id: project.id });
 				}
 			});
 			tempData.push({ title: customerRecord.name, data: projectList });
 		});
-		debugger;
 		this.setState({ processedData: tempData });
-	}
-
-	activitiesCallAPI(selectedProject) {
-		var header = INITIAL_HEADERS;
-		header['Authorization'] = 'Bearer ' + this.props.accessToken;
-		const { params, query } = RequestBody.activities(selectedProject);
-		debugger;
-		callAPI(GetActivitiesAPI, params, query, header)
-			.then((response) => {
-				this.setState({
-					isLoading: false,
-					activityData: response
-				});
-				this.props.navigation.navigate('ActivityList', {
-					activityData: this.state.activityData,
-					project: selectedProject.name
-				});
-			})
-			.catch((error) => {
-				console.log(error);
-			});
 	}
 
 	//Alert message
@@ -115,11 +75,10 @@ class ProjectList extends Component {
 
 	onProjectClicked = (selectedProject) => {
 		debugger;
-
 		this.setState({ selectedProjectId: selectedProject.id });
-		this.activitiesCallAPI(selectedProject);
+		this.props.fetchActivities({selectedProject: selectedProject.name, props: this.props});
 	};
-
+	
 	renderSeparator = () => {
 		return (
 			<View
@@ -175,7 +134,8 @@ class ProjectList extends Component {
 const mapStateToProps = (state) => {
 	debugger;
 	const { accessToken } = state.loginReducers;
-	return { accessToken };
+	const {projectList, customerList} = state.timeEntryReducer;
+	return { accessToken, projectList, customerList };
 };
 
 const styles = StyleSheet.create({
@@ -194,4 +154,4 @@ const styles = StyleSheet.create({
 	}
 });
 
-export default connect(mapStateToProps, {})(ProjectList);
+export default connect(mapStateToProps, {fetchProjectData, fetchCustomerData, fetchActivities})(ProjectList);

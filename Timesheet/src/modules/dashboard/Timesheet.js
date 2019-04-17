@@ -25,8 +25,6 @@ class Timesheet extends Component {
 		nextProps.taskList;
 	}
 
-	
-
 	onPress = () => {
 		this.props.navigation.navigate('ProjectList');
 	};

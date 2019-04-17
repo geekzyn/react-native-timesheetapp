@@ -14,15 +14,43 @@ export const getTaskEntries = (props) => {
 		header['Authorization'] = 'Bearer ' + props;
 		callAPI(GetTaskEntriesAPI, {}, {}, header)
 			.then((response) => {
-				debugger;
-				dispatch({
-					type: SERVER_TASK_LIST,
-					payload: response.data
-				});
-				debugger;
-			})
+				if (typeof response !== 'undefined') {
+					saveTimeSheetDataToStorage(response.data);
+					dispatch({
+						type: SERVER_TASK_LIST,
+						payload: response.data
+					});
+					return;
+				  } else {
+					// in case of internet time out.  
+					getTimeSheetDataFromStorage(dispatch);
+				  }
+		  
+			})// in case of network not found.
 			.catch((error) => {
+				getTimeSheetDataFromStorage(dispatch);
 				console.log(error);
 			});
     };
 };
+
+//------------ AsyncStorage for TimeSheet Data ------//
+
+const saveTimeSheetDataToStorage = (list) => {
+	AppStorage.setValue('TimeSheetList', JSON.stringify(list));
+};
+
+const getTimeSheetDataFromStorage = (dispatch) => {
+		AppStorage.getValue('TimeSheetList')
+			.then((result) => {
+				dispatch({
+					type: SERVER_TASK_LIST,
+					payload: JSON.parse(result)
+				});
+			})
+			.catch((error) => {
+				console.log(error);
+				debugger;
+			});
+};
+

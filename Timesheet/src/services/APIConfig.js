@@ -53,7 +53,7 @@ export const PostEntriesAPI = {
 
 export const GetTaskEntriesAPI = {
 	method: GET,
-	endpoint: '/api/entries'
+	endpoint: '/api/entries/show'
 }
 
 export const SERVER_HEADER_KEYS_ACCEPT = 'Accept';

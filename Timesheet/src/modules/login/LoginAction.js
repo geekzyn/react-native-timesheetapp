@@ -21,19 +21,24 @@ export const requestLogin = (props) => {
 		debugger;
 		callAPI(LoginAPI, params, query, header)
 			.then((response) => {
-				const { message, access_token } = response;
 				debugger;
-				if (message != null && message !== undefined) {
-					requestFail(dispatch, message);
-				} else {
-					AppStorage.setValue('accessToken', access_token);
-					dispatch({
-						type: LOGIN_SUCCESS,
-						payload: access_token
-					});
-					navigation.navigate('Dashboard');
-				}
-			})
+				if (typeof response !== 'undefined') {
+					const { message, access_token } = response;
+					debugger;
+					if (message != null && message !== undefined) {
+						requestFail(dispatch, message);
+					} else {
+						AppStorage.setValue('accessToken', access_token);
+						dispatch({
+							type: LOGIN_SUCCESS,
+							payload: access_token
+						});
+						navigation.navigate('Dashboard');
+					}
+				return;
+			}
+			
+		})
 			.catch((error) => {
 				console.log(error);
 				requestFail(dispatch, error);

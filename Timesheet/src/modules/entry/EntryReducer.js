@@ -1,10 +1,13 @@
-import { TIME_ENTRY } from '../../utils/Constants';
+import { TIME_ENTRY, PROJECT_LIST, CUSTOMER_LIST, ACTIVITY_LIST } from '../../utils/Constants';
 
 const INITIAL_STATE = {
 	accessToken: '',
 	error: '',
 	loading: false,
-	timeEntrySaved: false
+	timeEntrySaved: false,
+	projectList: [],
+	customerList: [],
+	activityList: [],
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -14,6 +17,21 @@ export default (state = INITIAL_STATE, action) => {
 				...state,
 				timeEntrySaved: action.payload
 			};
+		case PROJECT_LIST:
+			return {
+				...state,
+				projectList: action.payload
+			};
+		case CUSTOMER_LIST:
+			return {
+				...state,
+				customerList: action.payload
+			}
+		case ACTIVITY_LIST:
+			return {
+				...state,
+				activityList: action.payload
+			}
 		default:
 			return state;
 	}
