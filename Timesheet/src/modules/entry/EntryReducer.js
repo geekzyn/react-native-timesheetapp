@@ -14,18 +14,6 @@ export default (state = INITIAL_STATE, action) => {
 				...state,
 				timeEntrySaved: action.payload
 			};
-		// case REQUEST_FAIL_ACTION:
-		// 	debugger;
-		// 	return {
-		// 		...state,
-		// 		loading: false,
-		// 		error: 'GET REQUEST FAILED'
-		// 	};
-		// case SPINNER_LOADING_ACTION:
-		// 	return {
-		// 		...state,
-		// 		loading: true
-		// 	};
 		default:
 			return state;
 	}

@@ -1,7 +1,9 @@
 import { combineReducers } from 'redux';
 import Login from '../../modules/login/LoginReducer';
-import TimeEntry from '../../modules/entry/EntryReducer';
+import TaskEntry from '../../modules/entry/EntryReducer';
+import TimeSheet from '../../modules/dashboard/TimeSheetReducer';
 export default combineReducers({
 	loginReducers: Login,
-	timeEntryReducer: TimeEntry
+	timeEntryReducer: TaskEntry,
+	timeSheetReducer: TimeSheet
 });

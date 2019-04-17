@@ -4,14 +4,30 @@ import WithNavigation from '../../common/HOCs/WithNavigation';
 import CalendarStrip from 'react-native-calendar-strip';
 import ActionButton from 'react-native-action-button';
 import Icon from 'react-native-vector-icons/Ionicons';
+import {connect} from 'react-redux';
+import {getTaskEntries} from './TimeSheetAction';
 
 class Timesheet extends Component {
 	constructor(props) {
 		super(props);
 	}
 
-	onPress = () => {
+	componentDidMount() {
 		debugger;
+		this.props.getTaskEntries(this.props.accessToken);
+	}
+
+	componentDidUpdate() {
+		debugger;
+	}
+
+	componentWillReceiveProps(nextProps) {
+		nextProps.taskList;
+	}
+
+	
+
+	onPress = () => {
 		this.props.navigation.navigate('ProjectList');
 	};
 
@@ -31,72 +47,17 @@ class Timesheet extends Component {
 					disabledDateNameStyle={{ color: 'grey' }}
 					disabledDateNumberStyle={{ color: 'grey' }}
 				/>
+				{ (this.props.serverTaskList.length > 0) ?
 				<FlatList
-					data={[
-						{
-							costumerName: 'Customer 1',
-							projectName: 'Project 1',
-							activityName: 'Activity 1',
-							timestamp: '02:00-04:00',
-							duration: '02:00'
-						},
-						{
-							costumerName: 'Customer 2',
-							projectName: 'Project 2',
-							activityName: 'Activity 2',
-							timestamp: '02:00-04:00',
-							duration: '02:00'
-						},
-						{
-							costumerName: 'Customer 3',
-							projectName: 'Project 3',
-							activityName: 'Activity 3',
-							timestamp: '02:00-04:00',
-							duration: '02:00'
-						},
-						{
-							costumerName: 'Customer 3',
-							projectName: 'Project 3',
-							activityName: 'Activity 3',
-							timestamp: '02:00-04:00',
-							duration: '02:00'
-						},
-						{
-							costumerName: 'Customer 3',
-							projectName: 'Project 3',
-							activityName: 'Activity 3',
-							timestamp: '02:00-04:00',
-							duration: '02:00'
-						},
-						{
-							costumerName: 'Customer 3',
-							projectName: 'Project 3',
-							activityName: 'Activity 3',
-							timestamp: '02:00-04:00',
-							duration: '02:00'
-						},
-						{
-							costumerName: 'Customer 3',
-							projectName: 'Project 3',
-							activityName: 'Activity 3',
-							timestamp: '02:00-04:00',
-							duration: '02:00'
-						},
-						{
-							costumerName: 'Customer 3',
-							projectName: 'Project 3',
-							activityName: 'Activity 3',
-							timestamp: '02:00-04:00',
-							duration: '02:00'
-						}
-					]}
+					style={{marginTop: 10, marginBottom: 10}}
+					data={this.props.serverTaskList}
 					renderItem={({ item }) => (
-						<View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between' }}>
+						<View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between', }}>
 							<View style={{ flexDirection: 'column', marginLeft: 10, marginBottom: 20 }}>
-								<Text style={styles.header}>{item.costumerName}</Text>
-								<Text style={styles.subtitle}>{item.projectName} </Text>
-								<Text style={styles.subtitle}>{item.activityName}</Text>
-								<Text style={styles.subtitle}>{item.timestamp}</Text>
+								<Text style={styles.header}>{item.user_id}</Text>
+								<Text style={styles.subtitle}>{item.id} </Text>
+								<Text style={styles.subtitle}>{item.activity_id}</Text>
+								<Text style={styles.subtitle}>{item.start_date}</Text>
 							</View>
 							<View
 								style={{
@@ -110,7 +71,8 @@ class Timesheet extends Component {
 							</View>
 						</View>
 					)}
-				/>
+				/> : null }
+
 
 				<ActionButton
 					style={{ position: 'absolute', alignSelf: 'flex-end', bottom: 0, paddingRight: 100 }}
@@ -120,6 +82,13 @@ class Timesheet extends Component {
 			</View>
 		);
 	}
+}
+
+const mapStateToProps = (state) => {
+	debugger;
+	const { accessToken } = state.loginReducers;
+	const { serverTaskList } = state.timeSheetReducer;
+	return { accessToken, serverTaskList };
 }
 
 const styles = StyleSheet.create({
@@ -137,12 +106,13 @@ const styles = StyleSheet.create({
 	},
 	header: {
 		color: 'black',
-		fontSize: 18
+		fontSize: 20
 	},
 	subtitle: {
 		color: 'grey',
 		fontSize: 16
 	}
+
 });
 
-export default WithNavigation(Timesheet);
+export default connect(mapStateToProps, {getTaskEntries})(WithNavigation(Timesheet));

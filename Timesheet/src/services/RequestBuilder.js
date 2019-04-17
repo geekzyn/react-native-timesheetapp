@@ -59,6 +59,7 @@ export const callAPI = async (config, params, query, header) => {
 
 		return parsedData;
 	} catch (err) {
+		debugger;
 		console.log(err);
 		throw err;
 	}

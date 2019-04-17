@@ -1,4 +1,3 @@
-import Utils from '../utils/Utils';
 
 export default class Requests {
 	/**
@@ -35,30 +34,14 @@ export default class Requests {
 		return new Promise(async (resolve, reject) => {
 			if (!hasError) console.log(response);
 			if (response.handledError) {
+				debugger;
 				if (response.handledError.message === 'Network request failed') {
-					if (!response.handledError.status) {
-						const selectedLocale = await AppAsyncStorage.getValue(AsyncStorageKeys.selectedlocale);
-						const locale = new Locale(selectedLocale);
-						let message = locale.strings ? locale.strings.NETWORK_ERROR : message;
-						if (response.handledError.status) {
-							message = locale.strings ? locale.strings.SERVER_ERROR : message;
-						}
-						return reject(new Error(message));
-					}
+						return reject(response.handledError.message);
 				}
 				return reject(response.handledError);
 			}
 			debugger;
 			return resolve(JSON.parse(response._bodyInit));
-			//   const resObj = { ...ResponseValidator.validateResponse(response) };
-			//   console.log(resObj);
-			//     return response.data
-			//       .json()
-			//       .then((parsedJSON) => {
-			//         resObj.data = parsedJSON;
-			//         return resolve(response);
-			//       })
-			//       .catch(err => reject(err));
 		});
 	}
 
@@ -92,7 +75,7 @@ export default class Requests {
 				// this gets called even if the request thing has been successful
 				// but since the success would have been already,
 				// context of the requesting thing will go out of scope... :)
-				reject(new Error('Connection timed out. Please try again, later.'));
+				reject({message: 'Connection timed out. Please try again, later.'});
 			}, milliseconds);
 
 			promise.then(resolve, reject);

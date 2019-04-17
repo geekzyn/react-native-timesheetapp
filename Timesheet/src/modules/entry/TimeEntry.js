@@ -27,12 +27,12 @@ class TimeEntry extends React.Component {
 		return {
 			headerRight: (
 				<TouchableOpacity onPress={navigation.getParam('onSaveData')}>
-					<Label style={{ marginRight: 10, color: 'green' }}>SAVE</Label>
+					<Label style={{ fontWeight: 'bold', marginRight: 10, color: 'green' }}>SAVE</Label>
 				</TouchableOpacity>
 			),
 			headerLeft: (
 				<TouchableOpacity onPress={navigation.getParam('onCancelPressed')}>
-					<Label style={{ marginLeft: 10, color: 'red' }}>CANCEL</Label>
+					<Label style={{ fontWeight: 'bold', marginLeft: 10, color: 'red' }}>CANCEL</Label>
 				</TouchableOpacity>
 			)
 		};

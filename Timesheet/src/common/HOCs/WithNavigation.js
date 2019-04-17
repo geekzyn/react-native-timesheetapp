@@ -2,7 +2,7 @@ import React from 'react';
 import { Platform } from 'react-native';
 import { Container, Header, Left, Right, Button, Body, Title, Icon } from 'native-base';
 
-const WithNavigation = (title = 'DashBoard' = (WrappedComponent) => (props) => {
+const WithNavigation = (title = 'DashBoard') = WrappedComponent => props => {
 	return (
 		<Container>
 			<Header
@@ -21,7 +21,7 @@ const WithNavigation = (title = 'DashBoard' = (WrappedComponent) => (props) => {
 			</Header>
 			<WrappedComponent {...props} />
 		</Container>
-	);
-});
+	)
+}
 
-export default WithNavigation;
+export default WithNavigation

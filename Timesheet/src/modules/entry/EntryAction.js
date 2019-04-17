@@ -24,7 +24,8 @@ export const saveTimeEntry = (props) => {
 				}
 			})
 			.catch((error) => {
-				console.log(error);
+				debugger;
+				console.log(error.message);
 				// requestFail(dispatch, error);
 			});
 	};
