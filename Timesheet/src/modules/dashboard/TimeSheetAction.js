@@ -4,7 +4,7 @@ import RequestBody from '../../services/RequestBody';
 import { INITIAL_HEADERS } from '../../services/RequestBuilder';
 import { Alert } from 'react-native';
 import AppStorage from '../../utils/AppAsyncStorage';
-import { SERVER_TASK_LIST } from '../../utils/Constants';
+import { SERVER_TASK_LIST, ASTORAGE_OFFLINETASK } from '../../utils/Constants';
 
 export const getTaskEntries = (props) => {
 	debugger;
@@ -53,4 +53,23 @@ const getTimeSheetDataFromStorage = (dispatch) => {
 				debugger;
 			});
 };
+
+export const getTaskQueueDataFromStorage = () => {
+	return (dispatch) => {
+		AppStorage.getValue(ASTORAGE_OFFLINETASK)
+		.then((result) => {
+			const offlineTaskList = JSON.parse(result);
+			dispatch({
+				type: UPDATE_OFFLINETASKQUEUE,
+				payload: offlineTaskList
+			});
+		})
+		.catch((error) => {
+			console.log(error);
+			debugger;
+		});
+	}
+	
+};
+
 

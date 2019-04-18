@@ -22,6 +22,17 @@ class LoginScreen extends Component {
 		};
 	}
 
+	componentDidMount() {
+
+	}
+
+	componentWillReceiveProps(nextProps) {
+		debugger;
+		if (typeof nextProps.accessToken === 'string' && nextProps.accessToken !== '') {
+			this.props.navigation.navigate('Dashboard');
+		}
+	}
+
 	//------------------------ Login Helper Methods ----------------------//
 	// #1
 	prepareForLogin() {
@@ -135,8 +146,8 @@ class LoginScreen extends Component {
 
 const mapStateToProps = (state) => {
 	debugger;
-	const { loading, isConnected } = state.loginReducers;
-	return { loading, isConnected };
+	const { loading, isConnected, accessToken } = state.loginReducers;
+	return { loading, isConnected, accessToken };
 };
 
 const styles = StyleSheet.create({

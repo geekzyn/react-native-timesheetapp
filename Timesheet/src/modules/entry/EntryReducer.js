@@ -1,4 +1,13 @@
-import { TIME_ENTRY, PROJECT_LIST, CUSTOMER_LIST, ACTIVITY_LIST } from '../../utils/Constants';
+import { 
+	TIME_ENTRY, 
+	PROJECT_LIST,
+	CUSTOMER_LIST, 
+	ACTIVITY_LIST,
+	SELECTED_PROJECT,
+	OFFLINE_TASKQUEUE,
+	ASTORAGE_OFFLINETASK,
+} from '../../utils/Constants';
+import AppStorage from '../../utils/AppAsyncStorage';
 
 const INITIAL_STATE = {
 	accessToken: '',
@@ -8,6 +17,8 @@ const INITIAL_STATE = {
 	projectList: [],
 	customerList: [],
 	activityList: [],
+	selectedProject: '',
+	offlineTaskQueueList: [],
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -32,6 +43,27 @@ export default (state = INITIAL_STATE, action) => {
 				...state,
 				activityList: action.payload
 			}
+		case SELECTED_PROJECT: 
+			return {
+				...state,
+				selectedProject: action.payload
+			}
+		case OFFLINE_TASKQUEUE: {
+			debugger;
+			var list = state.offlineTaskQueueList
+			list.push(action.payload);
+			AppStorage.setValue(ASTORAGE_OFFLINETASK, JSON.stringify(list));
+			return {
+				...state,
+				offlineTaskQueueList: list
+			}
+		}
+		case UPDATE_OFFLINETASKQUEUE: {
+			return {
+				...state,
+				offlineTaskQueueList: action.payload
+			}
+		}
 		default:
 			return state;
 	}

@@ -1,29 +1,62 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, NetInfo } from 'react-native';
 import WithNavigation from '../../common/HOCs/WithNavigation';
 import CalendarStrip from 'react-native-calendar-strip';
 import ActionButton from 'react-native-action-button';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {connect} from 'react-redux';
-import {getTaskEntries} from './TimeSheetAction';
+import {getTaskEntries, getTaskQueueDataFromStorage} from './TimeSheetAction';
+import {uploadOfflineTask} from '../entry/EntryAction';
 
 class Timesheet extends Component {
 	constructor(props) {
 		super(props);
+		this.state = {
+			isConnected: false,
+			isUpdated: true,
+		}
 	}
-
+//------------------- Component Class Methods -------------------//
 	componentDidMount() {
-		debugger;
+		// added the event listener to know if connected.
+		this.props.getTaskQueueDataFromStorage();
 		this.props.getTaskEntries(this.props.accessToken);
+		NetInfo.addEventListener("connectionChange", this.handleConnectionChange);
 	}
 
 	componentDidUpdate() {
 		debugger;
 	}
 
-	componentWillReceiveProps(nextProps) {
-		nextProps.taskList;
+	componentWillUnmount() {
+		// remove the network event listener
+		NetInfo.isConnected.removeEventListener(
+			"connectionChange",
+			this.handleConnectionChange
+		  );
 	}
+
+	handleConnectionChange = connectionInfo => {
+		console.log("connection info: ", connectionInfo);
+		NetInfo.isConnected.fetch().then(isConnected => {
+		  this.setState({ isConnected: isConnected });
+		  const {offlineTaskQueueList} = this.props;
+			if (isConnected) {
+				if (
+					typeof offlineTaskQueueList != 'undefined'
+					|| offlineTaskQueueList !== null
+					&& offlineTaskQueueList.length > 0
+					)  {
+						offlineTaskQueueList.forEach(item => {
+							debugger;
+							this.props.uploadOfflineTask(item);
+							offlineTaskQueueList.shift();
+						});
+				}
+			}
+		});
+	};
+
 
 	onPress = () => {
 		this.props.navigation.navigate('ProjectList');
@@ -48,7 +81,7 @@ class Timesheet extends Component {
 				{ (this.props.serverTaskList.length > 0) ?
 				<FlatList
 					style={{marginTop: 10, marginBottom: 10}}
-					data={this.props.serverTaskList}
+					data={this.props.newTaskList}
 					renderItem={({ item }) => (
 						<View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between', }}>
 							<View style={{ flexDirection: 'column', marginLeft: 10, marginBottom: 20 }}>
@@ -85,8 +118,9 @@ class Timesheet extends Component {
 const mapStateToProps = (state) => {
 	debugger;
 	const { accessToken } = state.loginReducers;
-	const { serverTaskList } = state.timeSheetReducer;
-	return { accessToken, serverTaskList };
+	const {offlineTaskQueueList} = state.timeEntryReducer;
+	const { serverTaskList, newTaskList } = state.timeSheetReducer;
+	return { accessToken, serverTaskList, newTaskList, offlineTaskQueueList };
 }
 
 const styles = StyleSheet.create({
@@ -113,4 +147,4 @@ const styles = StyleSheet.create({
 
 });
 
-export default connect(mapStateToProps, {getTaskEntries})(WithNavigation(Timesheet));
+export default connect(mapStateToProps, {getTaskEntries, getTaskQueueDataFromStorage, uploadOfflineTask})(WithNavigation(Timesheet));

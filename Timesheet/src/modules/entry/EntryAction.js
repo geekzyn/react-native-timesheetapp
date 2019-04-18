@@ -4,7 +4,14 @@ import RequestBody from '../../services/RequestBody';
 import { INITIAL_HEADERS } from '../../services/RequestBuilder';
 import { Alert } from 'react-native';
 import AppStorage from '../../utils/AppAsyncStorage';
-import { TIME_ENTRY, ACTIVITY_LIST, PROJECT_LIST, CUSTOMER_LIST, PROJECTLIST_KEY, CUSTOMERLIST_KEY  } from '../../utils/Constants';
+import { 
+	ACTIVITY_LIST, 
+	PROJECT_LIST, 
+	CUSTOMER_LIST, 
+	OFFLINE_TASKQUEUE,
+	SELECTED_PROJECT,
+	NEW_OFFLINE_TASK_UPDATE,
+  } from '../../utils/Constants';
 import {GetProjectAPI, GetCustomerAPI, GetActivitiesAPI} from '../../services/APIConfig';
 
 export const saveTimeEntry = (props) => {
@@ -23,15 +30,45 @@ export const saveTimeEntry = (props) => {
 						navigation.popToTop();
 						Alert.alert('Success', message);
 					}
+				} else {
+					updateOfflineQueueList(dispatch, props, params);
 				}
 				
 			})
 			.catch((error) => {
 				debugger;
 				console.log(error.message);
-				// requestFail(dispatch, error);
+				updateOfflineQueueList(dispatch, props, params);
 			});
 	};
+};
+
+const updateOfflineQueueList = (dispatch, props, queueItem) => {
+	debugger;
+	// to maintaine offline queue of task
+	dispatch({
+		type: OFFLINE_TASKQUEUE,
+		payload: queueItem
+	});
+
+	// for updated offline timesheet list
+	dispatch({
+		type: NEW_OFFLINE_TASK_UPDATE,
+		payload: queueItem
+	});
+	props.navigation.popToTop();
+	Alert.alert('OFFLINE', "As you are offline, data is saved locally and will be uploaded later.");
+
+}
+
+export const saveSelectedProject = (props) => {
+	debugger;
+	return (dispatch) => {
+		dispatch ({
+			type: SELECTED_PROJECT,
+			payload: props
+		});
+	}
 };
 
 export const fetchProjectData = (accessToken) => {
@@ -78,15 +115,12 @@ export const fetchCustomerData = (accessToken) => {
 				} else {
 					getCustomerListFromStorage(dispatch);
 				}
-			
-				
 			})
 			.catch((error) => {
 				getCustomerListFromStorage(dispatch);
 				console.log(error);
 			});
 	}
-	
 }
 
 export const fetchActivities = (value)=> {
@@ -102,11 +136,11 @@ export const fetchActivities = (value)=> {
 				if (typeof response !== 'undefined') {
 					dispatch({
 						type: ACTIVITY_LIST,
-						payload: response.data,
+						payload: response,
 					});
 					// saving to async Storage
-					AppStorage.setValue('activityList', JSON.stringify(response.data));
-					navigateToAcivity(selectedProject);
+					AppStorage.setValue('activityList', JSON.stringify(response));
+					navigateToAcivity();
 				}
 				else {
 					getActivityFromStorage(dispatch, props);
@@ -119,10 +153,34 @@ export const fetchActivities = (value)=> {
 		}
 }
 
+export const uploadOfflineTask = (offlineTask) => {
+	//dispatch an action to show loading spinner while data is being fetched.
+	return (dispatch) => {
+		const header = INITIAL_HEADERS;
+		debugger;
+		callAPI(PostEntriesAPI, offlineTask, query, header)
+			.then((response) => {
+				if (typeof response !== 'undefined') {
+					const { message, access_token } = response;
+					if (message != null && message !== undefined) {
+						Alert.alert('Success', message);
+					}
+				} else {
+					Alert.alert('Not Uploaded', "failure");
+					// updateOfflineQueueList(dispatch, props, params);
+				}
+				
+			})
+			.catch((error) => {
+				debugger;
+				console.log(error.message);
+				// updateOfflineQueueList(dispatch, props, params);
+			});
+	};
+}
+
 const navigateToAcivity = (props) => {
-	props.navigation.navigate('ActivityList', {
-		project: props.selectedProjectName
-	});
+	props.navigation.navigate('ActivityList');
 }
 
 
@@ -176,3 +234,4 @@ const getActivityFromStorage = (dispatch, props) => {
 			debugger;
 		});
 };
+

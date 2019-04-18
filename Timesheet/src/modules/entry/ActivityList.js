@@ -7,23 +7,11 @@ import {connect} from 'react-redux';
 class ActivityList extends Component {
 	constructor(props) {
 		super(props);
-		debugger;
 	}
 
-	// componentWillReceiveProps(props) {
-	// 	debugger;
-	// }
-
-	componentWillUpdate(props) {
+	componentWillReceiveProps(nextProps) {
+		const {selectedProject} = this.props;
 		debugger;
-		// const { activityData, project } = this.props.navigation.state.params;
-		// this.setState({
-		// 	activityData,
-		// 	project
-		// });
-	}
-
-	componentDidMount() {
 	}
 
 	// componentWillMount() {
@@ -68,11 +56,12 @@ class ActivityList extends Component {
 					ItemSeparatorComponent={this.renderSeparator}
 					data={this.props.activityList}
 					renderItem={({ item }) => {
+						debugger;
 						return (
 							<TouchableOpacity
 								onPress={this.onActivityClicked.bind(this, {
 									activity: item,
-									project: this.state.project
+									project: this.props.selectedProject
 								})}
 							>
 								<Label>{item.name}</Label>
@@ -87,8 +76,8 @@ class ActivityList extends Component {
 
 const mapStateToProps = (state) => {
 	debugger;
-	const { activityList  } = state.timeEntryReducer;
-	return { activityList };
+	const { activityList, selectedProject  } = state.timeEntryReducer;
+	return { activityList, selectedProject };
 }
 
 const styles = StyleSheet.create({

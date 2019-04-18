@@ -6,7 +6,12 @@ import { INITIAL_HEADERS } from '../../services/RequestBuilder';
 import { callAPI } from '../../services/RequestBuilder';
 import RequestBody from '../../services/RequestBody';
 import { connect } from 'react-redux';
-import {fetchProjectData, fetchCustomerData, fetchActivities} from './EntryAction';
+import {
+	fetchProjectData, 
+	fetchCustomerData, 
+	fetchActivities,
+	saveSelectedProject,
+} from './EntryAction';
 import AppStorage from '../../utils/AppAsyncStorage';
 
 class ProjectList extends Component {
@@ -38,7 +43,6 @@ class ProjectList extends Component {
 		} else if (this.props.projectList.length > 0 && this.state.processedData.length == 0) {
 			this.processDisplayData();
 		}
-
 	}
 
 	processDisplayData() {
@@ -74,9 +78,9 @@ class ProjectList extends Component {
 	}
 
 	onProjectClicked = (selectedProject) => {
-		debugger;
 		this.setState({ selectedProjectId: selectedProject.id });
-		this.props.fetchActivities({selectedProject: selectedProject.name, props: this.props});
+		this.props.saveSelectedProject(selectedProject.name);
+		this.props.fetchActivities({selectedProject, props: this.props});
 	};
 	
 	renderSeparator = () => {
@@ -154,4 +158,9 @@ const styles = StyleSheet.create({
 	}
 });
 
-export default connect(mapStateToProps, {fetchProjectData, fetchCustomerData, fetchActivities})(ProjectList);
+export default connect(mapStateToProps, {
+	fetchProjectData, 
+	fetchCustomerData, 
+	fetchActivities,
+	saveSelectedProject,
+})(ProjectList);
