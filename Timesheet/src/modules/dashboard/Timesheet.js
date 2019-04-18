@@ -19,6 +19,7 @@ class Timesheet extends Component {
 //------------------- Component Class Methods -------------------//
 	componentDidMount() {
 		// added the event listener to know if connected.
+		debugger;
 		this.props.getTaskQueueDataFromStorage();
 		this.props.getTaskEntries(this.props.accessToken);
 		NetInfo.addEventListener("connectionChange", this.handleConnectionChange);

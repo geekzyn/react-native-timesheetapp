@@ -4,7 +4,7 @@ import RequestBody from '../../services/RequestBody';
 import { INITIAL_HEADERS } from '../../services/RequestBuilder';
 import { Alert } from 'react-native';
 import AppStorage from '../../utils/AppAsyncStorage';
-import { SERVER_TASK_LIST, ASTORAGE_OFFLINETASK } from '../../utils/Constants';
+import { SERVER_TASK_LIST, ASTORAGE_OFFLINETASK, UPDATE_OFFLINETASKQUEUE } from '../../utils/Constants';
 
 export const getTaskEntries = (props) => {
 	debugger;

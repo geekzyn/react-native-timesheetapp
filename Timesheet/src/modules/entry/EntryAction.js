@@ -31,34 +31,42 @@ export const saveTimeEntry = (props) => {
 						Alert.alert('Success', message);
 					}
 				} else {
-					updateOfflineQueueList(dispatch, props, params);
+					// navigation.navigate('Dashboard');
+				
+					updateOfflineQueueList(dispatch, params);
+					updateDisplayList(dispatch, params, props);
 				}
 				
 			})
 			.catch((error) => {
 				debugger;
 				console.log(error.message);
-				updateOfflineQueueList(dispatch, props, params);
+				updateOfflineQueueList(dispatch, params);
+				updateDisplayList(dispatch, params, props);
+				// navigation.navigate('Dashboard');
+
 			});
 	};
 };
 
-const updateOfflineQueueList = (dispatch, props, queueItem) => {
+const updateOfflineQueueList = (dispatch, queueItem) => {
 	debugger;
 	// to maintaine offline queue of task
+	debugger;
 	dispatch({
 		type: OFFLINE_TASKQUEUE,
 		payload: queueItem
 	});
+}
 
-	// for updated offline timesheet list
+const updateDisplayList = (dispatch, queueItem, props) => {
+	debugger;
 	dispatch({
-		type: NEW_OFFLINE_TASK_UPDATE,
+		type: NEW_OFFLINE_TASK_UPDATE ,
 		payload: queueItem
 	});
-	props.navigation.popToTop();
 	Alert.alert('OFFLINE', "As you are offline, data is saved locally and will be uploaded later.");
-
+	props.navigation.popToTop();
 }
 
 export const saveSelectedProject = (props) => {

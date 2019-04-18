@@ -6,6 +6,7 @@ import {
 	SELECTED_PROJECT,
 	OFFLINE_TASKQUEUE,
 	ASTORAGE_OFFLINETASK,
+	UPDATE_OFFLINETASKQUEUE,
 } from '../../utils/Constants';
 import AppStorage from '../../utils/AppAsyncStorage';
 
@@ -51,6 +52,9 @@ export default (state = INITIAL_STATE, action) => {
 		case OFFLINE_TASKQUEUE: {
 			debugger;
 			var list = state.offlineTaskQueueList
+			if (list === null || typeof list === 'undefined') {
+				list = [];
+			}
 			list.push(action.payload);
 			AppStorage.setValue(ASTORAGE_OFFLINETASK, JSON.stringify(list));
 			return {

@@ -8,7 +8,7 @@ export default class Requests {
      * @param {Object} body
      */
 	static send(URI, header, method, body) {
-		const MILLISECONDS = 30000;
+		const MILLISECONDS = 20000;
 		debugger;
 		const request = Requests.requestBuilder(header, method, body);
 		console.log(request);

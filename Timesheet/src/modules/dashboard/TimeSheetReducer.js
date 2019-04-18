@@ -21,6 +21,9 @@ export default (state = INITIAL_STATE, action) => {
 		case NEW_OFFLINE_TASK_UPDATE: {
 			debugger;
 			var list = state.newTaskList;
+			if (list === null || typeof list === 'undefined') {
+				list = [];
+			}
 			list.push(action.payload);
 			return {
 				...state,
