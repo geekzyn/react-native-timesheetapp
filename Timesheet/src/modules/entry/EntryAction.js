@@ -166,7 +166,7 @@ export const uploadOfflineTask = (offlineTask) => {
 	return (dispatch) => {
 		const header = INITIAL_HEADERS;
 		debugger;
-		callAPI(PostEntriesAPI, offlineTask, query, header)
+		callAPI(PostEntriesAPI, offlineTask, {}, header)
 			.then((response) => {
 				if (typeof response !== 'undefined') {
 					const { message, access_token } = response;

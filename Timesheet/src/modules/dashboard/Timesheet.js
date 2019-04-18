@@ -13,8 +13,9 @@ class Timesheet extends Component {
 		super(props);
 		this.state = {
 			isConnected: false,
-			isUpdated: true,
+			readyToLoad: true,
 		}
+	 isOfflineDataReady = true;
 	}
 //------------------- Component Class Methods -------------------//
 	componentDidMount() {
@@ -22,7 +23,6 @@ class Timesheet extends Component {
 		debugger;
 		this.props.getTaskQueueDataFromStorage();
 		this.props.getTaskEntries(this.props.accessToken);
-		NetInfo.addEventListener("connectionChange", this.handleConnectionChange);
 	}
 
 	componentDidUpdate() {
@@ -31,32 +31,45 @@ class Timesheet extends Component {
 
 	componentWillUnmount() {
 		// remove the network event listener
-		NetInfo.isConnected.removeEventListener(
-			"connectionChange",
-			this.handleConnectionChange
-		  );
+		// NetInfo.isConnected.removeEventListener(
+		// 	"connectionChange",
+		// 	this.handleConnectionChange
+		//   );
 	}
 
-	handleConnectionChange = connectionInfo => {
-		console.log("connection info: ", connectionInfo);
-		NetInfo.isConnected.fetch().then(isConnected => {
-		  this.setState({ isConnected: isConnected });
-		  const {offlineTaskQueueList} = this.props;
-			if (isConnected) {
-				if (
-					typeof offlineTaskQueueList != 'undefined'
-					|| offlineTaskQueueList !== null
-					&& offlineTaskQueueList.length > 0
-					)  {
-						offlineTaskQueueList.forEach(item => {
-							debugger;
-							this.props.uploadOfflineTask(item);
-							offlineTaskQueueList.shift();
-						});
-				}
-			}
-		});
-	};
+	// handleConnectionChange = connectionInfo => {
+	// 	console.log("connection info: ", connectionInfo);
+	
+	// };
+
+	componentWillReceiveProps(nextProps) {
+		debugger;
+		if (isOfflineDataReady) {
+			this.uploadOfflineData();
+		}
+	}
+
+	uploadOfflineData() {
+		debugger;
+		if (this.props.offlineTaskQueueList !== null && typeof this.props.offlineTaskQueueList !== 'undefined' && this.props.offlineTaskQueueList.length > 0) 
+
+			// NetInfo.isConnected.fetch().then(isConnected => {
+			// 	debugger;
+			// 	const {offlineTaskQueueList} = this.props;
+			// 	  if (isConnected) {
+					  {
+						isOfflineDataReady = false;
+						debugger;
+							  this.props.offlineTaskQueueList.forEach(item => {
+								  debugger;
+								  this.props.uploadOfflineTask(item);
+								  this.props.offlineTaskQueueList.shift();
+							  });
+						isOfflineDataReady = true;
+					  }
+				 // }
+			//  });
+	}
 
 
 	onPress = () => {
