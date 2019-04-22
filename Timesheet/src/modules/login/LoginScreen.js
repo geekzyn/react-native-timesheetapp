@@ -7,7 +7,7 @@ import RequestBody from '../../services/RequestBody';
 import { INITIAL_HEADERS } from '../../services/RequestBuilder';
 import AppStorage from '../../utils/AppAsyncStorage';
 import { Spinner } from '../../utils/Spinner';
-import { requestLogin } from '../login/LoginAction';
+import { requestLogin, getAccessTokenFromStorage } from '../login/LoginAction';
 import { connect } from 'react-redux';
 
 class LoginScreen extends Component {
@@ -23,13 +23,14 @@ class LoginScreen extends Component {
 	}
 
 	componentDidMount() {
-
+		debugger;
+		this.props.getAccessTokenFromStorage();
 	}
 
 	componentWillReceiveProps(nextProps) {
 		debugger;
 		if (typeof nextProps.accessToken === 'string' && nextProps.accessToken !== '') {
-			this.props.navigation.navigate('Dashboard');
+			this.props.navigation.navigate('TaskNavigator');
 		}
 	}
 
@@ -172,4 +173,4 @@ const styles = StyleSheet.create({
 	}
 });
 
-export default connect(mapStateToProps, { requestLogin })(LoginScreen);
+export default connect(mapStateToProps, { requestLogin, getAccessTokenFromStorage })(LoginScreen);

@@ -7,6 +7,7 @@ import Utils from '../../utils/Utils';
 import { saveTimeEntry } from '../entry/EntryAction';
 import { connect } from 'react-redux';
 
+
 class TimeEntry extends React.Component {
 	constructor(props) {
 		super(props);
@@ -64,6 +65,7 @@ class TimeEntry extends React.Component {
 			Alert.alert('TRACKER ALERT', 'Please fill the details.');
 			return;
 		}
+		debugger;
 		this.props.saveTimeEntry({ state: this.state, navigation: this.props.navigation });
 	};
 

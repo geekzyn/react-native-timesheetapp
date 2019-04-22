@@ -46,11 +46,17 @@ export const GetActivitiesAPI = {
 	endpoint: '/api/activities'
 };
 
+//New Entry
 export const PostEntriesAPI = {
 	method: POST,
 	endpoint: '/api/entries'
 };
 
+//Offline Entry update
+
+
+
+//To Show the list
 export const GetTaskEntriesAPI = {
 	method: GET,
 	endpoint: '/api/entries/show'

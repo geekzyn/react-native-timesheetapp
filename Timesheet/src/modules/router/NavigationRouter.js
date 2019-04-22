@@ -5,7 +5,6 @@ import LoginScreen from '../login/LoginScreen';
 import Profile from '../consultant/Profile';
 import Calender from '../calendar/Calender';
 import ProjectTracker from '../calendar/ProjectTracker';
-import SideMenu from './SideMenu';
 import Timesheet from '../dashboard/Timesheet';
 import ProjectList from '../entry/ProjectList';
 import ActivityList from '../entry/ActivityList';
@@ -16,9 +15,6 @@ import { Button } from 'native-base';
 const TaskNavigator = createStackNavigator({
 	TimeSheet: {
 		screen: Timesheet,
-		navigationOptions: {
-			header: null
-		}
 	},
 	ProjectList: {
 		screen: ProjectList
@@ -31,35 +27,6 @@ const TaskNavigator = createStackNavigator({
 	}
 });
 
-const DashboardDrawerNavigator = createDrawerNavigator(
-	{
-		TaskNavigator: {
-			screen: TaskNavigator
-		},
-		Profile: {
-			screen: Profile
-			// navigationOptions: {
-			//   header: null,
-			// },
-		},
-		Calender: {
-			screen: Calender,
-			navigationOptions: {
-				header: null
-			}
-		},
-		Project: {
-			screen: ProjectTracker,
-			navigationOptions: {
-				header: null
-			}
-		}
-	},
-	{
-		contentComponent: (props) => <SideMenu {...props} />
-	}
-);
-
 const AppNavigator = createStackNavigator(
 	{
 		LoginScreen: {
@@ -68,11 +35,8 @@ const AppNavigator = createStackNavigator(
 				header: null
 			}
 		},
-		Home: {
-			screen: Home
-		},
-		Dashboard: {
-			screen: DashboardDrawerNavigator,
+		TaskNavigator: {
+			screen: TaskNavigator,
 			navigationOptions: {
 				header: null
 			}

@@ -33,7 +33,7 @@ export const requestLogin = (props) => {
 							type: LOGIN_SUCCESS,
 							payload: access_token
 						});
-						navigation.navigate('Dashboard');
+						navigation.navigate('TaskNavigator');
 					}
 				return;
 			}
@@ -45,6 +45,33 @@ export const requestLogin = (props) => {
 			});
 	};
 };
+
+
+//------------ AsyncStorage for TimeSheet Data ------//
+
+export const getAccessTokenFromStorage = () => {
+	return(dispatch)=> {
+		AppStorage.getValue('accessToken')
+		.then((result) => {
+			debugger;
+			dispatch({
+				type: LOGIN_SUCCESS,
+				payload: result
+			});
+		})
+		.catch((error) => {
+			console.log(error);
+		});
+	}
+};
+
+// AppStorage.setValue('accessToken', access_token);
+// dispatch({
+// 	type: LOGIN_SUCCESS,
+// 	payload: access_token
+// });
+
+
 
 //---------------- Action handling async response --------------------//
 const requestSuccess = (dispatch, data) => {
