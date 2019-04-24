@@ -14,12 +14,12 @@ class TimeEntry extends React.Component {
 		debugger;
 		const { activity, project } = this.props.navigation.state.params;
 		this.state = {
-			activityFromTime: new Date(),
-			activityToTime: new Date(),
+			activityFromTime: new Date().toDateString(),
+			activityToTime: new Date().toDateString(),
 			activity,
 			project,
 			duration: 0,
-			description: ''
+			description: '',
 		};
 	}
 
@@ -45,7 +45,12 @@ class TimeEntry extends React.Component {
 
 	handleOnDateSelected = (date) => {
 		this.setState({
-			date,
+			date: date
+		});
+	};
+
+	handleOnTimeSelected = () => {
+		this.setState({
 			duration: ((this.state.activityToTime - this.state.activityFromTime) / (1000 * 60 * 60)) % 24
 		});
 	};
@@ -115,8 +120,6 @@ class TimeEntry extends React.Component {
 								icon="date-range"
 								title="DATE"
 								mode="date"
-								date={this.state.date}
-								value={Moment(this.state.date).format('L')}
 								onDateSelected={this.handleOnDateSelected}
 							/>
 							<CellDatePicker
@@ -125,7 +128,7 @@ class TimeEntry extends React.Component {
 								mode="time"
 								date={this.state.activityFromTime}
 								value={Moment(this.state.activityFromTime).format('LT')}
-								onDateSelected={this.handleOnDateSelected}
+								onDateSelected={this.handleOnTimeSelected}
 							/>
 							<CellDatePicker
 								icon="access-time"
@@ -133,7 +136,7 @@ class TimeEntry extends React.Component {
 								mode="time"
 								date={this.state.activityToTime}
 								value={Moment(this.state.activityToTime).format('LT')}
-								onDateSelected={this.handleOnDateSelected}
+								onDateSelected={this.handleOnTimeSelected}
 							/>
 							<Cell title="DURATION" icon="update">
 								<Text>{this.state.duration}</Text>

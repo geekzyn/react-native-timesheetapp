@@ -4,7 +4,11 @@ import RequestBody from '../../services/RequestBody';
 import { INITIAL_HEADERS } from '../../services/RequestBuilder';
 import { Alert } from 'react-native';
 import AppStorage from '../../utils/AppAsyncStorage';
-import { SERVER_TASK_LIST, ASTORAGE_OFFLINETASK, UPDATE_OFFLINETASKQUEUE } from '../../utils/Constants';
+import { SERVER_TASK_LIST,
+	ASTORAGE_OFFLINETASK,
+	UPDATE_OFFLINETASKQUEUE,
+	UPDATE_FILTER_LIST,
+} from '../../utils/Constants';
 
 export const getTaskEntries = (props) => {
 	debugger;
@@ -32,6 +36,16 @@ export const getTaskEntries = (props) => {
 				console.log(error);
 			});
     };
+};
+
+export const updateFilteredList = (list) => {
+	return (dispatch) => {
+		debugger;
+		dispatch({
+			type: UPDATE_FILTER_LIST,
+			payload: list,
+		});
+	};
 };
 
 //------------ AsyncStorage for TimeSheet Data ------//

@@ -22,32 +22,43 @@ class ProjectList extends Component {
 			projectData: [],
 			processedData: [],
 			activityData: [],
-			selectedProjectId: null
+			selectedProjectId: null,
 		};
 		debugger;
 	}
 
 	componentDidMount() {
 		debugger;
+		const {customerList, projectList } = this.props;
 		if (this.props.customerList == null || this.props.customerList.length == 0) {
-			this.props.fetchCustomerData(this.props.accessToken);
+			this.props.fetchCustomerData(this.props);
+			this.props.fetchProjectData(this.props);
+		} else {
+			this.processDisplayData(projectList, customerList);
 		}
 	}
 
 	componentWillReceiveProps(nextProps){
 		debugger;
-		if (typeof nextProps.customerList !== 'undefined' && nextProps.customerList !== null &&
-		nextProps.customerList.length > 0 && this.props.projectList.length == 0) {
+		// Handling the undefined in offline mode
+		let {projectList = [], customerList = [] } = nextProps;
+		
+		//Handling null in offline mode
+		if (projectList === null )
+		{
+			projectList = [];
+		}
+		if (customerList === null) {
+			customerList = [];
+		}
+		 if ((projectList.length > 0 && customerList.length > 0) && this.state.processedData.length == 0) {
 			debugger;
-			this.props.fetchProjectData(this.props.accessToken);
-		} else if (this.props.projectList.length > 0 && this.state.processedData.length == 0) {
-			this.processDisplayData();
+			this.processDisplayData(projectList, customerList);
 		}
 	}
 
-	processDisplayData() {
+	processDisplayData(projectList, customerList) {
 		let tempData = [];
-		const {customerList, projectList} = this.props;
 			customerList.forEach((customerRecord) => {
 			let tempProjectList = [];
 			projectList.filter((project) => {

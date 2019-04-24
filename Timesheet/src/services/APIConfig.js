@@ -53,7 +53,10 @@ export const PostEntriesAPI = {
 };
 
 //Offline Entry update
-
+export const SyncEntriesAPI = {
+	method: POST,
+	endpoint: '/api/entries/syncAll'
+};
 
 
 //To Show the list

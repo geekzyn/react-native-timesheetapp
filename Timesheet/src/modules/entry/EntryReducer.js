@@ -1,5 +1,5 @@
 import { 
-	TIME_ENTRY, 
+	TIMEENTRY_SAVED, 
 	PROJECT_LIST,
 	CUSTOMER_LIST, 
 	ACTIVITY_LIST,
@@ -7,13 +7,15 @@ import {
 	OFFLINE_TASKQUEUE,
 	ASTORAGE_OFFLINETASK,
 	UPDATE_OFFLINETASKQUEUE,
+	RESET_ENTRYSAVE_FLAG,
+	OFFLINE_UPLOAD,
 } from '../../utils/Constants';
 import AppStorage from '../../utils/AppAsyncStorage';
 
 const INITIAL_STATE = {
 	accessToken: '',
 	error: '',
-	loading: false,
+	isDataUploaded: false,
 	timeEntrySaved: false,
 	projectList: [],
 	customerList: [],
@@ -24,11 +26,22 @@ const INITIAL_STATE = {
 
 export default (state = INITIAL_STATE, action) => {
 	switch (action.type) {
-		case TIME_ENTRY:
+
+		case OFFLINE_UPLOAD: 
+			return {
+				...state,
+				isDataUploaded: action.payload
+			};
+		case TIMEENTRY_SAVED:
 			return {
 				...state,
 				timeEntrySaved: action.payload
 			};
+		case RESET_ENTRYSAVE_FLAG: 
+			return {
+				...state,
+				timeEntrySaved: false
+			}
 		case PROJECT_LIST:
 			return {
 				...state,
@@ -67,6 +80,7 @@ export default (state = INITIAL_STATE, action) => {
 				...state,
 				offlineTaskQueueList: action.payload
 			}
+
 		}
 		default:
 			return state;

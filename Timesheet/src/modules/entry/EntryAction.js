@@ -1,5 +1,5 @@
 import { callAPI } from '../../services/RequestBuilder';
-import { PostEntriesAPI } from '../../services/APIConfig';
+import { PostEntriesAPI, SyncEntriesAPI } from '../../services/APIConfig';
 import RequestBody from '../../services/RequestBody';
 import { INITIAL_HEADERS } from '../../services/RequestBuilder';
 import { Alert } from 'react-native';
@@ -11,6 +11,8 @@ import {
 	OFFLINE_TASKQUEUE,
 	SELECTED_PROJECT,
 	NEW_OFFLINE_TASK_UPDATE,
+	TIMEENTRY_SAVED,
+	RESET_ENTRYSAVE_FLAG
   } from '../../utils/Constants';
 import {GetProjectAPI, GetCustomerAPI, GetActivitiesAPI} from '../../services/APIConfig';
 
@@ -30,6 +32,10 @@ export const saveTimeEntry = (props) => {
 						navigation.popToTop();
 						Alert.alert('Success', message);
 					}
+					dispatch({
+						type: TIMEENTRY_SAVED,
+						payload: true
+					});
 				} else {
 					// navigation.navigate('Dashboard');
 				
@@ -49,8 +55,16 @@ export const saveTimeEntry = (props) => {
 	};
 };
 
+export const resetTimeEntryFlag = () => {
+	return (dispatch) => {
+		dispatch({
+			type: RESET_ENTRYSAVE_FLAG,
+			}
+		)
+	}
+}
+
 const updateOfflineQueueList = (dispatch, queueItem) => {
-	debugger;
 	// to maintaine offline queue of task
 	debugger;
 	dispatch({
@@ -65,8 +79,12 @@ const updateDisplayList = (dispatch, queueItem, props) => {
 		type: NEW_OFFLINE_TASK_UPDATE ,
 		payload: queueItem
 	});
+
 	Alert.alert('OFFLINE', "As you are offline, data is saved locally and will be uploaded later.");
 	props.navigation.popToTop();
+	//update the async storage with updated list for offine
+	
+	
 }
 
 export const saveSelectedProject = (props) => {
@@ -79,8 +97,10 @@ export const saveSelectedProject = (props) => {
 	}
 };
 
-export const fetchProjectData = (accessToken) => {
+export const fetchProjectData = (props) => {
 	var header = INITIAL_HEADERS;
+	const {accessToken, navigation} = props;
+
 	header['Authorization'] = 'Bearer ' + accessToken;
 	debugger;
 	//dispatch an action to show loading spinner while data is being fetched.
@@ -97,18 +117,21 @@ export const fetchProjectData = (accessToken) => {
 					AppStorage.setValue('projectList', JSON.stringify(response.data));
 				} else {
 					// fetch data from async storage in case of network issue.
-					getProjectListFromStorage(dispatch, PROJECT_LIST);
+					alert("Unable to fetch from server... Checking local storage now.")
+					getProjectListFromStorage(dispatch, navigation);
 				}
 			})
 			.catch((error) => {
-				getProjectListFromStorage(dispatch, PROJECT_LIST);
-				console.log(error);
+				alert()
+				getProjectListFromStorage(dispatch, navigation);
 			});
 	}
 }
 
-export const fetchCustomerData = (accessToken) => {
+export const fetchCustomerData = (props) => {
 	var header = INITIAL_HEADERS;
+	const {accessToken, navigation} = props;
+
 	return (dispatch) => {
 		header['Authorization'] = 'Bearer ' + accessToken;
 		callAPI(GetCustomerAPI, {}, {}, header)
@@ -121,12 +144,13 @@ export const fetchCustomerData = (accessToken) => {
 					// saving to async Storage
 					AppStorage.setValue('customerList', JSON.stringify(response.data));
 				} else {
-					getCustomerListFromStorage(dispatch);
+					alert("Unable to fetch from server... Checking local storage now.")
+					getCustomerListFromStorage(dispatch, navigation);
 				}
 			})
 			.catch((error) => {
-				getCustomerListFromStorage(dispatch);
-				console.log(error);
+				alert("Coudn't find data in offline storage. Error:" + error)
+				getCustomerListFromStorage(dispatch, navigation);
 			});
 	}
 }
@@ -151,12 +175,13 @@ export const fetchActivities = (value)=> {
 					navigateToAcivity();
 				}
 				else {
+					alert("Unable to fetch from server... Checking local storage now.")
 					getActivityFromStorage(dispatch, props);
 				}
 			})
 			.catch((error) => {
+				alert("Coudn't find data in offline storage. Error:" + error)
 				getActivityFromStorage(dispatch, props);
-				console.log(error);
 			});
 		}
 }
@@ -166,12 +191,16 @@ export const uploadOfflineTask = (offlineTask) => {
 	return (dispatch) => {
 		const header = INITIAL_HEADERS;
 		debugger;
-		callAPI(PostEntriesAPI, offlineTask, {}, header)
+		callAPI(SyncEntriesAPI, offlineTask, {}, header)
 			.then((response) => {
+				debugger;
 				if (typeof response !== 'undefined') {
 					const { message, access_token } = response;
 					if (message != null && message !== undefined) {
+						debugger;
 						Alert.alert('Success', message);
+						// reset the offline task queue
+						updateOfflineQueueList(dispatch, [])
 					}
 				} else {
 					Alert.alert('Not Uploaded', "failure");
@@ -198,31 +227,39 @@ const getCustomerListFromStorage = (dispatch) => {
 		AppStorage.getValue('customerList')
 			.then((result) => {
 				const customerList = JSON.parse(result);
-				debugger;
+				if (customerList === null) {
+					alert("Coudn't find data in offline storage. Please connect once to sync data from server")
+					navigation.pop();
+					return
+				}
 				dispatch({
 					type: CUSTOMER_LIST,
 					payload: customerList
 				});
 			})
 			.catch((error) => {
-				console.log(error);
-				debugger;
+				alert("Coudn't find data in offline storage. Error:" + error)
+				navigation.pop();
 			});
 };
 
-const getProjectListFromStorage = (dispatch) => {
+const getProjectListFromStorage = (dispatch, navigation) => {
 	AppStorage.getValue('projectList')
 		.then((result) => {
 			const projectList = JSON.parse(result);
-			debugger;
+			if (projectList === null) {
+				alert("Coudn't find data in offline storage. Please connect once to sync data from server")
+				navigation.pop();
+				return
+			}
 			dispatch({
 				type: PROJECT_LIST,
 				payload: projectList
 			});
 		})
 		.catch((error) => {
-			console.log(error);
-			debugger;
+			alert("Coudn't find data in offline storage. Error:" + error)
+			navigation.pop();
 		});
 };
 
@@ -230,7 +267,11 @@ const getActivityFromStorage = (dispatch, props) => {
 	AppStorage.getValue('activityList')
 		.then((result) => {
 			const activityList = JSON.parse(result);
-			debugger;
+
+			if (activityList === null) {
+				alert("Coudn't find data in offline storage. Please connect once to sync data from server")
+				navigation.pop();
+			}
 			dispatch({
 				type: ACTIVITY_LIST,
 				payload: activityList
@@ -238,8 +279,8 @@ const getActivityFromStorage = (dispatch, props) => {
 			navigateToAcivity(props);
 		})
 		.catch((error) => {
-			console.log(error);
-			debugger;
+			alert("Coudn't find data in offline storage. Error:" + error)
+			navigation.pop();
 		});
 };
 

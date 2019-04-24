@@ -5,70 +5,73 @@ import ActionButton from 'react-native-action-button';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {connect} from 'react-redux';
 import { Label, Button } from 'native-base';
-import {getTaskEntries, getTaskQueueDataFromStorage} from './TimeSheetAction';
-import {uploadOfflineTask} from '../entry/EntryAction';
+import {getTaskEntries, getTaskQueueDataFromStorage, updateFilteredList} from './TimeSheetAction';
+import {uploadOfflineTask, resetTimeEntryFlag} from '../entry/EntryAction';
 import moment from 'moment';
 
 class Timesheet extends Component {
 	constructor(props) {
+		debugger;
 		super(props);
 		this.state = {
 			isConnected: false,
 			readyToLoad: true,
 			isDateSelected: false,
-			filteredTask: [],
 		}
+
 	 isOfflineDataReady = true;
 	}
 
 
 	//Adding Custom Navigation Headers
-	static navigationOptions = ({ navigation }) => {
-		return {
-			headerRight: (
-				<TouchableOpacity onPress={navigation.getParam('onResetFilter')}>
-					<Label style={{ fontSize: 18, marginRight: 10, color: 'black' }}>RESET FILTER</Label>
-				</TouchableOpacity>
-			),
-			headerLeft: (
-				<TouchableOpacity onPress={navigation.getParam('onCancelPressed')}>
-					<Label style={{ fontSize: 18 , marginLeft: 10, color: 'black' }}>LOG OUT</Label>
-				</TouchableOpacity>
-			),
-			headerStyle: {
-				backgroundColor: '#276fea',
-			  },
-			};
-	};
+	// static navigationOptions = ({ navigation }) => {
+	// 	// let date = new Date().toDateString();
+	// 	return {
+	// 		headerRight: (
+	// 			<TouchableOpacity onPress={navigation.getParam('onResetFilter')}>
+	// 				<Label style={{ fontSize: 18, marginRight: 10, color: 'black' }}>RESET FILTER</Label>
+	// 			</TouchableOpacity>
+	// 		),
+	// 		headerLeft: (
+	// 			<TouchableOpacity onPress={navigation.getParam('onCancelPressed')}>
+	// 				<Label style={{ fontSize: 18 , marginLeft: 10, color: 'black' }}>LOG OUT</Label>
+	// 			</TouchableOpacity>
+	// 		),
+	// 		headerStyle: {
+	// 			backgroundColor: '#276fea',
+	// 		  },
+	// 		};
+	// };
 //------------------- Component Class Methods -------------------//
 	componentDidMount() {
-		this.props.navigation.setParams({ onResetFilter: this.onResetFilter, onCancelPressed: this.onCancelPressed });
+		debugger;
 
 		// added the event listener to know if connected.
 		debugger;
 		this.props.getTaskQueueDataFromStorage();
 		this.props.getTaskEntries(this.props.accessToken);
+
 		//set calender selection to null
-		this._calender.setSelectedDate(0);
+		NetInfo.isConnected.addEventListener('change', this.onConnectionChange)
 	}
-
-	componentDidUpdate() {
-		debugger;
-	}
-
-	componentWillUnmount() {
-		
-	}
-
-	// handleConnectionChange = connectionInfo => {
-	// 	console.log("connection info: ", connectionInfo);
 	
-	// };
+	componentWillUnmount() {
+		NetInfo.removeEventListener('change', this.onConnectionChange)
+	}
+	
+	onConnectionChange = connected =>  {
+		if (connected) {
+			debugger;
+			this.uploadOfflineData();
+		}
+	}
 
 	componentWillReceiveProps(nextProps) {
 		debugger;
-		if (isOfflineDataReady) {
-			this.uploadOfflineData();
+		if (nextProps.timeEntrySaved) {
+			debugger;
+			this.props.resetTimeEntryFlag();
+			this.props.getTaskEntries(this.props.accessToken);
 		}
 	}
 
@@ -78,10 +81,6 @@ class Timesheet extends Component {
 	// Save and Cancle Action
 	onResetFilter = () => {
 		this._calender.setSelectedDate(0);
-		this.setState({
-			isDateSelected: false,
-			filteredTask: []
-		});
 	};
 
 	onCancelPressed = () => {
@@ -93,23 +92,10 @@ class Timesheet extends Component {
 	uploadOfflineData() {
 		debugger;
 		if (this.props.offlineTaskQueueList !== null && typeof this.props.offlineTaskQueueList !== 'undefined' && this.props.offlineTaskQueueList.length > 0) 
-
-			// NetInfo.isConnected.fetch().then(isConnected => {
-			// 	debugger;
-			// 	const {offlineTaskQueueList} = this.props;
-			// 	  if (isConnected) {
-					  {
-						isOfflineDataReady = false;
-						debugger;
-							  this.props.offlineTaskQueueList.forEach(item => {
-								  debugger;
-								  this.props.uploadOfflineTask(item);
-								  this.props.offlineTaskQueueList.shift();
-							  });
-						isOfflineDataReady = true;
-					  }
-				 // }
-			//  });
+		{
+			debugger;
+			this.props.uploadOfflineTask(this.props.offlineTaskQueueList);
+		}
 	}
 
 
@@ -122,38 +108,49 @@ class Timesheet extends Component {
 		var date = new Date(props._d);
 		var formatedDate = moment(date).format("MMM Do YY");
 		// this to avoid default date.
-		if (formatedDate === "Jan 1st 70")
+		if (formatedDate === "Jan 1st 70" ||  typeof this.props.newTaskList === 'undefined')
 			{ return;}
 
 		this.filterTaskByDate(formatedDate);
 	}
 
 	filterTaskByDate = (date) => {
-	 var taskList	=  this.props.newTaskList.filter((task) => {
-			let taskDate = new Date(task.start_date);
-			let formatedDate = moment(taskDate).format("MMM Do YY");
+	debugger;
+	 var taskList = this.props.newTaskList.filter((task) => {
+
+			let formatedDate = moment(task.start_date).format("MMM Do YY");
 			return date === formatedDate;
-		})
-		this.setState({
-			filteredTask: taskList,
-			isDateSelected: true
 		});
+		// alert("TaskList: " + taskList.length)
+		this.props.updateFilteredList(taskList);
+
 	}
 
 	displayListOfData = () => {
+		const {newTaskList} = this.props
+		if (this.state.isDateSelected === false ) {
+			if (typeof newTaskList !== 'undefined' && newTaskList.length > 0) {
+				let date = new Date();
+				this.onSelectedDate({_d: date})
+				// this._calender.setSelectedDate(date);
+				this.setState({
+					isDateSelected: true
+				});
+			}
+
+		}
 		debugger;
-		var list = this.state.isDateSelected > 0 ? this.state.filteredTask : this.props.newTaskList;
 		return ( 
 			<FlatList
-					style={{marginTop: 10, marginBottom: 10}}
-					data={list}
+					style={{margin: 10}}
+					data={this.props.filterTaskList}
 					renderItem={({ item }) => (
 						<View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between', }}>
 							<View style={{ flexDirection: 'column', marginLeft: 10, marginBottom: 20 }}>
-								<Text style={styles.header}>{item.user_id}</Text>
-								<Text style={styles.subtitle}>{item.id} </Text>
-								<Text style={styles.subtitle}>{item.activity_id}</Text>
-								<Text style={styles.subtitle}>{item.start_date}</Text>
+								<Text style={styles.header}>{item.activity.project.customer.name}</Text>
+								<Text style={styles.subtitle}>{item.activity.project.name} </Text>
+								<Text style={styles.subtitle}>{item.activity.name}</Text>
+								<Text style={[styles.subtitle, {color: 'green'}]}>{item.start_date}</Text>
 							</View>
 							<View
 								style={{
@@ -163,7 +160,7 @@ class Timesheet extends Component {
 									alignItems: 'center'
 								}}
 							>
-								<Text style={styles.subtitle}>{item.duration} </Text>
+								<Text style={[styles.subtitle, {color: 'orange'}]}>{item.duration} </Text>
 							</View>
 						</View>
 					)}
@@ -176,12 +173,12 @@ class Timesheet extends Component {
 	render() {
 		return (
 			<View style={{ flex: 1, flexDirection: 'column' }}>
+			
 				<CalendarStrip
 					style={{
 						height: 100,
 						paddingTop: 10,
 						paddingBottom: 10,
-						marginTop: 20,
 					}}
 					calendarHeaderStyle={{ color: 'white' }}
 					calendarColor={'#187bec'}
@@ -193,14 +190,17 @@ class Timesheet extends Component {
 					ref={component => this._calender = component}
 					
 				/>
-				{ (typeof this.props.serverTaskList !== 'undefined' && this.props.serverTaskList.length > 0) ? this.displayListOfData() : null }
+				
+				{this.displayListOfData()}
 
-
+				
 				<ActionButton
 					style={{ position: 'absolute', alignSelf: 'flex-end', bottom: 0, paddingRight: 100 }}
 					buttonColor="rgba(231,76,60,1)"
 					onPress={this.onPress.bind(this)}
 				/>
+
+				
 			</View>
 		);
 	}
@@ -209,9 +209,9 @@ class Timesheet extends Component {
 const mapStateToProps = (state) => {
 	debugger;
 	const { accessToken } = state.loginReducers;
-	const {offlineTaskQueueList} = state.timeEntryReducer;
-	const { serverTaskList, newTaskList } = state.timeSheetReducer;
-	return { accessToken, serverTaskList, newTaskList, offlineTaskQueueList };
+	const {offlineTaskQueueList, timeEntrySaved } = state.timeEntryReducer;
+	const { serverTaskList, newTaskList, filterTaskList } = state.timeSheetReducer;
+	return { accessToken, serverTaskList, newTaskList, filterTaskList, offlineTaskQueueList, timeEntrySaved};
 }
 
 const styles = StyleSheet.create({
@@ -228,14 +228,20 @@ const styles = StyleSheet.create({
 		fontSize: 10
 	},
 	header: {
-		color: 'black',
-		fontSize: 20
+		color: 'blue',
+		fontSize: 24
 	},
 	subtitle: {
 		color: 'grey',
-		fontSize: 16
+		fontSize: 18
 	}
 
 });
 
-export default connect(mapStateToProps, {getTaskEntries, getTaskQueueDataFromStorage, uploadOfflineTask})(Timesheet);
+export default connect(mapStateToProps, {
+	getTaskEntries,
+	getTaskQueueDataFromStorage,
+	uploadOfflineTask,
+	updateFilteredList,
+	resetTimeEntryFlag
+})(Timesheet);

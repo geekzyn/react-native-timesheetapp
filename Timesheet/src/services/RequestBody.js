@@ -10,14 +10,15 @@ const RequestBody = {
 	timeEntry: (props) => {
 		debugger;
 
-		// id is temporary and to be removed.
 		const params = {
 			project_id: props.activity.project_id,
 			activity_id: props.activity.id,
 			description: props.description,
-			start_date: props.activityFromTime,
-			end_date: props.activityToTime,
-			id: 1,
+			duration: props.duration,
+			start_date: new Date(props.date).toDateString(),
+			start_time: new Date(props.activityFromTime).toDateString(),
+			end_time: new Date(props.activityToTime).toDateString(),
+			activity: {name: props.activity.name, project: {name: props.project, customer: {name: "Temp Customer"}}},
 		};
 		debugger;
 		return {

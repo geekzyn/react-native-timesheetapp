@@ -1,7 +1,9 @@
 import { 
 	SERVER_TASK_LIST,
 	NEW_OFFLINE_TASK_UPDATE,
+	UPDATE_FILTER_LIST,
 } from '../../utils/Constants';
+import AppStorage from '../../utils/AppAsyncStorage';
 
 const INITIAL_STATE = {
 	serverTaskList: [],
@@ -16,8 +18,13 @@ export default (state = INITIAL_STATE, action) => {
 				...state,
 				serverTaskList: action.payload,
 				newTaskList: action.payload,
-				filterTaskList: action.payload,
 			};
+		case UPDATE_FILTER_LIST: 
+		debugger;
+			return {
+				...state,
+				filterTaskList: action.payload
+			}
 		case NEW_OFFLINE_TASK_UPDATE: {
 			debugger;
 			var list = state.newTaskList;
@@ -25,6 +32,8 @@ export default (state = INITIAL_STATE, action) => {
 				list = [];
 			}
 			list.push(action.payload);
+			// update the task list in offline mode too
+			AppStorage.setValue('TimeSheetList', JSON.stringify(list));
 			return {
 				...state,
 				newTaskList: list

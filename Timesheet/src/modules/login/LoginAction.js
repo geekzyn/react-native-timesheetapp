@@ -36,6 +36,10 @@ export const requestLogin = (props) => {
 						navigation.navigate('TaskNavigator');
 					}
 				return;
+			} else {
+				alert("Unable to Login. Please check your network.");
+				requestFail(dispatch, error);
+
 			}
 			
 		})
