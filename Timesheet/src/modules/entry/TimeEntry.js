@@ -14,11 +14,12 @@ class TimeEntry extends React.Component {
 		debugger;
 		const { activity, project } = this.props.navigation.state.params;
 		this.state = {
-			activityFromTime: new Date().toDateString(),
-			activityToTime: new Date().toDateString(),
+			activityFromTime: new Date(),
+			activityToTime: new Date(),
 			activity,
 			project,
 			duration: 0,
+			date: new Date(),
 			description: '',
 		};
 	}
@@ -120,6 +121,8 @@ class TimeEntry extends React.Component {
 								icon="date-range"
 								title="DATE"
 								mode="date"
+								date={this.state.date}
+								value={Moment(this.state.date).format('L')}
 								onDateSelected={this.handleOnDateSelected}
 							/>
 							<CellDatePicker

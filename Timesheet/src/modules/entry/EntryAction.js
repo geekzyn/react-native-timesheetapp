@@ -22,6 +22,7 @@ export const saveTimeEntry = (props) => {
 	//dispatch an action to show loading spinner while data is being fetched.
 	return (dispatch) => {
 		const { params, query } = RequestBody.timeEntry(props.state);
+		updateDisplayList(dispatch, params, props);
 		const header = INITIAL_HEADERS;
 		debugger;
 		callAPI(PostEntriesAPI, params, query, header)
@@ -29,8 +30,7 @@ export const saveTimeEntry = (props) => {
 				if (typeof response !== 'undefined') {
 					const { message, access_token } = response;
 					if (message != null && message !== undefined) {
-						navigation.popToTop();
-						Alert.alert('Success', message);
+						Alert.alert('New entry is successfully synced on server', message);
 					}
 					dispatch({
 						type: TIMEENTRY_SAVED,
@@ -40,7 +40,6 @@ export const saveTimeEntry = (props) => {
 					// navigation.navigate('Dashboard');
 				
 					updateOfflineQueueList(dispatch, params);
-					updateDisplayList(dispatch, params, props);
 				}
 				
 			})
@@ -48,7 +47,6 @@ export const saveTimeEntry = (props) => {
 				debugger;
 				console.log(error.message);
 				updateOfflineQueueList(dispatch, params);
-				updateDisplayList(dispatch, params, props);
 				// navigation.navigate('Dashboard');
 
 			});
@@ -65,6 +63,7 @@ export const resetTimeEntryFlag = () => {
 }
 
 const updateOfflineQueueList = (dispatch, queueItem) => {
+	alert("Updating the task in Offline Queue");
 	// to maintaine offline queue of task
 	debugger;
 	dispatch({
@@ -80,7 +79,7 @@ const updateDisplayList = (dispatch, queueItem, props) => {
 		payload: queueItem
 	});
 
-	Alert.alert('OFFLINE', "As you are offline, data is saved locally and will be uploaded later.");
+	Alert.alert("Task List Updated..");
 	props.navigation.popToTop();
 	//update the async storage with updated list for offine
 	

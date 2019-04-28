@@ -5,6 +5,7 @@ import Timesheet from '../dashboard/Timesheet';
 import ProjectList from '../entry/ProjectList';
 import ActivityList from '../entry/ActivityList';
 import TimeEntry from '../entry/TimeEntry';
+import Report from '../report/Report';
 
 const TaskNavigator = createStackNavigator({
 	TimeSheet: {
@@ -21,6 +22,13 @@ const TaskNavigator = createStackNavigator({
 	},
 	TimeEntry: {
 		screen: TimeEntry
+	},
+	ReportScreen: {
+		screen: Report,
+		navigationOptions: {
+			title: "REPORT"
+		}
+
 	}
 });
 

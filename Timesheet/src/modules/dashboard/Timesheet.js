@@ -2,9 +2,8 @@ import React, { Component } from 'react';
 import { View, Text, StyleSheet, FlatList, TouchableOpacity, NetInfo } from 'react-native';
 import CalendarStrip from 'react-native-calendar-strip';
 import ActionButton from 'react-native-action-button';
-import Icon from 'react-native-vector-icons/Ionicons';
 import {connect} from 'react-redux';
-import { Label, Button } from 'native-base';
+import { Label, Button, Footer, FooterTab, Icon } from 'native-base';
 import {getTaskEntries, getTaskQueueDataFromStorage, updateFilteredList} from './TimeSheetAction';
 import {uploadOfflineTask, resetTimeEntryFlag} from '../entry/EntryAction';
 import moment from 'moment';
@@ -139,7 +138,6 @@ class Timesheet extends Component {
 			}
 
 		}
-		debugger;
 		return ( 
 			<FlatList
 					style={{margin: 10}}
@@ -168,6 +166,28 @@ class Timesheet extends Component {
 		);
 	}
 
+	reportClicked() {
+		this.props.navigation.navigate('ReportScreen')
+	}
+
+	//This is for footter tab in React  
+	footterTabs() {
+		return (
+			<Footer>
+				<FooterTab>
+					<Button style={{backgroundColor: "#0051FF"}}  vertical onPress={this.reportClicked.bind(this)}>
+						<Icon name="clipboard" />
+						<Text>Report</Text>
+					</Button>
+					<Button  style={{backgroundColor: "#0051FF"}}  vertical>
+						<Icon name="camera" />
+						<Text>Task</Text>
+					</Button>
+				</FooterTab>
+		  </Footer>
+
+		)
+	}
 
 
 	render() {
@@ -181,7 +201,7 @@ class Timesheet extends Component {
 						paddingBottom: 10,
 					}}
 					calendarHeaderStyle={{ color: 'white' }}
-					calendarColor={'#187bec'}
+					calendarColor={'#0051FF'}
 					highlightDateNumberStyle={{ color: 'white' }}
 					highlightDateNameStyle={{ color: 'white' }}
 					disabledDateNameStyle={{ color: 'grey' }}
@@ -190,12 +210,11 @@ class Timesheet extends Component {
 					ref={component => this._calender = component}
 					
 				/>
-				
 				{this.displayListOfData()}
+				{this.footterTabs()}
 
-				
 				<ActionButton
-					style={{ position: 'absolute', alignSelf: 'flex-end', bottom: 0, paddingRight: 100 }}
+					style={{ position: 'absolute', alignSelf: 'flex-end', bottom: 50, paddingRight: 100 }}
 					buttonColor="rgba(231,76,60,1)"
 					onPress={this.onPress.bind(this)}
 				/>

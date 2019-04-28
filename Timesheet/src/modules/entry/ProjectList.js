@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, FlatList, SectionList } from 'react-native';
-import { Container, Header, Input, Icon, Item, Button, Title, Label } from 'native-base';
+import { Container, Header, Input, Icon, Item, Button, Title, Label, Spinner } from 'native-base';
 import { GetActivitiesAPI } from '../../services/APIConfig';
 import { INITIAL_HEADERS } from '../../services/RequestBuilder';
 import { callAPI } from '../../services/RequestBuilder';
@@ -107,21 +107,22 @@ class ProjectList extends Component {
 		);
 	};
 
-	render() {
-		return (
-			<Container style={{ backgroundColor: '#f3f3f3' }}>
-				<Header searchBar rounded>
-					<Item>
-						<Icon name="ios-search" />
-						<Input placeholder="Search" />
-						<Icon name="ios-people" />
-					</Item>
+	manageListUI() {
+		if (this.state.processedData.length > 0) {
+			return (
+				this.showListOfData()
+			)
+		} else {
+			return (
+				<Spinner color='red'/>
+			)
+		}
+		
+	}
 
-					<Button transparent>
-						<Text>Search Task</Text>
-					</Button>
-				</Header>
-				<SectionList
+	showListOfData() {
+		return (
+			<SectionList
 					ItemSeparatorComponent={this.renderSeparator}
 					//{ title: 'Customer 1', data: [ {name:'Project 1', id: "id"}, {name:'Project 1', id: "id"}]
 					sections={this.state.processedData}
@@ -141,6 +142,25 @@ class ProjectList extends Component {
 						);
 					}}
 				/>
+		)
+	}
+
+	render() {
+		return (
+			<Container style={{ backgroundColor: '#f3f3f3' }}>
+				<Header searchBar rounded>
+					<Item>
+						<Icon name="ios-search" />
+						<Input placeholder="Search" />
+						<Icon name="ios-people" />
+					</Item>
+
+					<Button transparent>
+						<Text>Search Task</Text>
+					</Button>
+				</Header>
+				{this.manageListUI()}
+				
 			</Container>
 		);
 	}
