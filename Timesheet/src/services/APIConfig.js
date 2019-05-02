@@ -65,6 +65,18 @@ export const GetTaskEntriesAPI = {
 	endpoint: '/api/entries/show'
 }
 
+//Total today entiers
+export const GetTotalTodayEntriesAPI = {
+	method: GET,
+	endpoint: '/api/reports/totalTodaysEntries'
+}
+
+//Total entiers time
+export const GetTotalEntriesTime = {
+	method: GET,
+	endpoint: '/api/reports/totalTodaysEntriesTime'
+}
+
 export const SERVER_HEADER_KEYS_ACCEPT = 'Accept';
 export const SERVER_HEADER_KEYS_CONTENT_TYPE = 'Content-Type';
 

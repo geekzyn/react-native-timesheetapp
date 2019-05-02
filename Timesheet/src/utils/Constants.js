@@ -20,3 +20,5 @@ export const UPDATE_OFFLINETASKQUEUE = 'updateOfflineTask';
 export const UPDATE_FILTER_LIST = 'updateFilterList';
 export const RESET_ENTRYSAVE_FLAG = 'resetEntrySaveFlag';
 export const OFFLINE_UPLOAD = 'offline_upload';
+export const TOTAL_TODAYENTRY = 'total_today_entry';
+export const TOTAL_TODAYENTRY_TIME = 'total_today_time';

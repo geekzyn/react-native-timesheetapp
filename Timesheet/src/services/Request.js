@@ -17,6 +17,7 @@ export default class Requests {
 			.then((response) => Requests.processResponse(response))
 			.catch((error) => {
 				console.log(error);
+				alert(error);
 				Requests.processResponse(
 					{
 						handledError: error

@@ -138,10 +138,25 @@ class Timesheet extends Component {
 			}
 
 		}
+
+		renderSeparator = () => {
+			return (
+			  <View
+				style={{
+				  height: 1,
+				  width: "86%",
+				  backgroundColor: "blue",
+				  marginLeft: "14%"
+				}}
+			  />
+			);
+		  };
+
 		return ( 
 			<FlatList
 					style={{margin: 10}}
 					data={this.props.filterTaskList}
+					ItemSeparatorComponent={this.renderSeparator}
 					renderItem={({ item }) => (
 						<View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between', }}>
 							<View style={{ flexDirection: 'column', marginLeft: 10, marginBottom: 20 }}>
@@ -237,7 +252,7 @@ const styles = StyleSheet.create({
 	bigBlue: {
 		color: 'blue',
 		fontWeight: 'bold',
-		fontSize: 30
+		fontSize: 32
 	},
 	red: {
 		color: 'red'
@@ -248,11 +263,11 @@ const styles = StyleSheet.create({
 	},
 	header: {
 		color: 'blue',
-		fontSize: 24
+		fontSize: 30
 	},
 	subtitle: {
-		color: 'grey',
-		fontSize: 18
+		color: 'black',
+		fontSize: 24
 	}
 
 });

@@ -25,10 +25,6 @@ const TaskNavigator = createStackNavigator({
 	},
 	ReportScreen: {
 		screen: Report,
-		navigationOptions: {
-			title: "REPORT"
-		}
-
 	}
 });
 
