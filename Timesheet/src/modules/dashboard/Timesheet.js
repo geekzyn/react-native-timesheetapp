@@ -21,26 +21,6 @@ class Timesheet extends Component {
 	 isOfflineDataReady = true;
 	}
 
-
-	//Adding Custom Navigation Headers
-	// static navigationOptions = ({ navigation }) => {
-	// 	// let date = new Date().toDateString();
-	// 	return {
-	// 		headerRight: (
-	// 			<TouchableOpacity onPress={navigation.getParam('onResetFilter')}>
-	// 				<Label style={{ fontSize: 18, marginRight: 10, color: 'black' }}>RESET FILTER</Label>
-	// 			</TouchableOpacity>
-	// 		),
-	// 		headerLeft: (
-	// 			<TouchableOpacity onPress={navigation.getParam('onCancelPressed')}>
-	// 				<Label style={{ fontSize: 18 , marginLeft: 10, color: 'black' }}>LOG OUT</Label>
-	// 			</TouchableOpacity>
-	// 		),
-	// 		headerStyle: {
-	// 			backgroundColor: '#276fea',
-	// 		  },
-	// 		};
-	// };
 //------------------- Component Class Methods -------------------//
 	componentDidMount() {
 		debugger;
@@ -71,6 +51,8 @@ class Timesheet extends Component {
 			debugger;
 			this.props.resetTimeEntryFlag();
 			this.props.getTaskEntries(this.props.accessToken);
+		} else if (nextProps){
+			this.displayListOfData(nextProps);
 		}
 	}
 
@@ -87,12 +69,21 @@ class Timesheet extends Component {
 		this.props.navigation.pop();
 	};
 
+	// Tabs at below
+	reportClicked() {
+		this.props.navigation.navigate('ReportScreen')
+	}
+
+	refreshList() {
+		;
+		this.onSelectedDate({_d: this._calender.state.selectedDate._d});
+	}
+
 
 	uploadOfflineData() {
 		debugger;
 		if (this.props.offlineTaskQueueList !== null && typeof this.props.offlineTaskQueueList !== 'undefined' && this.props.offlineTaskQueueList.length > 0) 
 		{
-			debugger;
 			this.props.uploadOfflineTask(this.props.offlineTaskQueueList);
 		}
 	}
@@ -103,7 +94,6 @@ class Timesheet extends Component {
 	};
 
 	onSelectedDate = (props) => {
-		debugger;
 		var date = new Date(props._d);
 		var formatedDate = moment(date).format("MMM Do YY");
 		// this to avoid default date.
@@ -118,6 +108,9 @@ class Timesheet extends Component {
 	 var taskList = this.props.newTaskList.filter((task) => {
 
 			let formatedDate = moment(task.start_date).format("MMM Do YY");
+			if (typeof task.start_date !== 'string') {
+				task.start_date = new Date(task.start_date).toDateString();
+			}
 			return date === formatedDate;
 		});
 		// alert("TaskList: " + taskList.length)
@@ -126,6 +119,7 @@ class Timesheet extends Component {
 	}
 
 	displayListOfData = () => {
+		debugger;
 		const {newTaskList} = this.props
 		if (this.state.isDateSelected === false ) {
 			if (typeof newTaskList !== 'undefined' && newTaskList.length > 0) {
@@ -154,7 +148,7 @@ class Timesheet extends Component {
 
 		return ( 
 			<FlatList
-					style={{margin: 10}}
+					style={{margin: 10, marginLeft: 20}}
 					data={this.props.filterTaskList}
 					ItemSeparatorComponent={this.renderSeparator}
 					renderItem={({ item }) => (
@@ -181,10 +175,6 @@ class Timesheet extends Component {
 		);
 	}
 
-	reportClicked() {
-		this.props.navigation.navigate('ReportScreen')
-	}
-
 	//This is for footter tab in React  
 	footterTabs() {
 		return (
@@ -194,9 +184,9 @@ class Timesheet extends Component {
 						<Icon name="clipboard" />
 						<Text>Report</Text>
 					</Button>
-					<Button  style={{backgroundColor: "#0051FF"}}  vertical>
-						<Icon name="camera" />
-						<Text>Task</Text>
+					<Button  style={{backgroundColor: "#0051FF"}}  vertical onPress={this.refreshList.bind(this)}>
+						<Icon name="refresh" />
+						<Text>Refresh</Text>
 					</Button>
 				</FooterTab>
 		  </Footer>

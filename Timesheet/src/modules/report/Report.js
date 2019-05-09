@@ -26,11 +26,11 @@ class Report extends Component {
                     <Text style={{fontSize: 30, color: 'blue', fontWeight:'bold'}}>REPORT</Text>
                 </View>
                 <View style={{ flexDirection: 'row', width: '100%', justifyContent: 'space-between', marginTop: 40}}>
-                    <Text style={{alignSelf: 'flex-start', fontSize: 40, color: 'green', margin: 10, marginRight: 20}}>Total Today Entries:</Text>
+                    <Text style={{alignSelf: 'flex-start', fontSize: 40, color: 'green', margin: 10, marginRight: 20}}>Today's Entries:</Text>
                     <Text style={{alignContent: 'flex-end' , fontSize: 40, color: 'green', margin: 10, marginLeft: 20}}>{this.props.totalTodayEntries}</Text>
                 </View>
                 <View style={{ flexDirection: 'row', width: '100%', justifyContent: 'space-between'}}>
-                    <Text style={{alignSelf: 'flex-start', fontSize: 40, color: 'green', margin: 10, marginRight: 20}}>Total Today Time Entries:</Text>
+                    <Text style={{alignSelf: 'flex-start', fontSize: 40, color: 'green', margin: 10, marginRight: 20}}>Today's Total Time:</Text>
                     <Text style={{alignContent: 'flex-end' , fontSize: 40, color: 'green', margin: 10, marginLeft: 20}}>{this.props.totalEntriesTime}</Text>
                 </View>
             </View>

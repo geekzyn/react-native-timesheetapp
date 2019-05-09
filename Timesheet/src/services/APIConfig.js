@@ -58,24 +58,23 @@ export const SyncEntriesAPI = {
 	endpoint: '/api/entries/syncAll'
 };
 
-
 //To Show the list
 export const GetTaskEntriesAPI = {
 	method: GET,
 	endpoint: '/api/entries/show'
-}
+};
 
 //Total today entiers
 export const GetTotalTodayEntriesAPI = {
 	method: GET,
-	endpoint: '/api/reports/totalTodaysEntries'
-}
+	endpoint: '/api/reports/totalTodaysEntriesMobile'
+};
 
 //Total entiers time
 export const GetTotalEntriesTime = {
 	method: GET,
-	endpoint: '/api/reports/totalTodaysEntriesTime'
-}
+	endpoint: '/api/reports/totalEntriesTimeMobile'
+};
 
 export const SERVER_HEADER_KEYS_ACCEPT = 'Accept';
 export const SERVER_HEADER_KEYS_CONTENT_TYPE = 'Content-Type';
