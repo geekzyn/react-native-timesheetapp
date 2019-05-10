@@ -1,5 +1,5 @@
 import { callAPI } from '../../services/RequestBuilder';
-import { GetTaskEntriesAPI } from '../../services/APIConfig';
+import { GetTaskEntriesAPI, DeleteTaskAPI } from '../../services/APIConfig';
 import RequestBody from '../../services/RequestBody';
 import { INITIAL_HEADERS } from '../../services/RequestBuilder';
 import { Alert } from 'react-native';
@@ -47,6 +47,28 @@ export const updateFilteredList = (list) => {
 		});
 	};
 };
+
+
+export const deleteTask = (taskId, props) => {
+	debugger;
+	var header = INITIAL_HEADERS;
+	return (dispatch) => {
+	header['Authorization'] = 'Bearer ' + props;
+	callAPI(DeleteTaskAPI, {}, taskId, header)
+	.then((response) => {
+		debugger;
+		if (typeof response !== 'undefined') {
+			
+		}
+		
+		}
+	)
+	.catch((error) => {
+		console.log(error);
+	});
+}
+};
+
 
 //------------ AsyncStorage for TimeSheet Data ------//
 

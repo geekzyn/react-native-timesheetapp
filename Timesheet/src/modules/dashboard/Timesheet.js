@@ -1,12 +1,86 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, FlatList, TouchableOpacity, NetInfo } from 'react-native';
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, NetInfo, Alert } from 'react-native';
 import CalendarStrip from 'react-native-calendar-strip';
 import ActionButton from 'react-native-action-button';
 import {connect} from 'react-redux';
 import { Label, Button, Footer, FooterTab, Icon } from 'native-base';
-import {getTaskEntries, getTaskQueueDataFromStorage, updateFilteredList} from './TimeSheetAction';
+import {getTaskEntries, getTaskQueueDataFromStorage, updateFilteredList, deleteTask} from './TimeSheetAction';
 import {uploadOfflineTask, resetTimeEntryFlag} from '../entry/EntryAction';
 import moment from 'moment';
+import Swipeout from 'react-native-swipeout';
+
+class FlatlistItem extends Component {
+
+	
+    constructor(props) {
+        super(props);     
+        this.state = ({
+			activeRowKey: null,
+
+        });
+    }
+   
+    render() {
+		const swipeSettings = {
+			autoClose: true,
+			onClose: (secId, rowId, direction) => {
+				if(this.state.activeRowKey != null) {
+					this.setState({ activeRowKey: null });
+				}              
+			},          
+			onOpen: (secId, rowId, direction) => {
+				this.setState({ activeRowKey: this.props.item.id });
+			},      
+			right: [
+				{ 
+					onPress: () => {    
+						const deletingRow = this.state.activeRowKey;          
+						Alert.alert(
+							'Alert',
+							'Are you sure you want to delete ?',
+							[                              
+							  {text: 'No', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
+							  {text: 'Yes', onPress: () => {   
+									debugger;
+									this.props.parentFlatList.props.deleteTask(this.props.item.id, this.props.parentFlatList.props.accessToken);
+									this.props.dataList.splice(this.props.index, 1); 
+								// //Refresh FlatList ! 
+									this.props.parentFlatList.refreshFlatList(deletingRow);
+							  }},
+							],
+							{ cancelable: true }
+						  ); 
+					}, 
+					text: 'Delete', type: 'delete' 
+				}
+			],  
+			rowId: this.props.index, 
+			sectionId: 1    
+		}
+      return (
+        <Swipeout {...swipeSettings} style={{backgroundColor: 'white'}}>
+						<View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between', }}>
+							<View style={{ flexDirection: 'column', marginLeft: 10, marginBottom: 20 }}>
+								<Text style={styles.header}>{this.props.item.activity.project.customer.name}</Text>
+								<Text style={styles.subtitle}>{this.props.item.activity.project.name} </Text>
+								<Text style={styles.subtitle}>{this.props.item.activity.name}</Text>
+								<Text style={[styles.subtitle, {color: 'green'}]}>{this.props.item.start_date}</Text>
+							</View>
+							<View
+								style={{
+									flexDirection: 'column',
+									marginRight: 10,
+									marginBottom: 20,
+									alignItems: 'center'
+								}}
+							>
+								<Text style={[styles.subtitle, {color: 'orange'}]}>{this.props.item.duration} </Text>
+							</View>
+						</View>
+					</Swipeout>      
+		);
+    }
+}
 
 class Timesheet extends Component {
 	constructor(props) {
@@ -16,10 +90,19 @@ class Timesheet extends Component {
 			isConnected: false,
 			readyToLoad: true,
 			isDateSelected: false,
+			deletedRowKey: null,            
 		}
 
 	 isOfflineDataReady = true;
 	}
+
+	refreshFlatList = (deletedKey) => {
+        this.setState((prevState) => {
+            return {
+                deletedRowKey: deletedKey
+            };
+        });
+    }
 
 //------------------- Component Class Methods -------------------//
 	componentDidMount() {
@@ -75,7 +158,6 @@ class Timesheet extends Component {
 	}
 
 	refreshList() {
-		;
 		this.onSelectedDate({_d: this._calender.state.selectedDate._d});
 	}
 
@@ -151,25 +233,10 @@ class Timesheet extends Component {
 					style={{margin: 10, marginLeft: 20}}
 					data={this.props.filterTaskList}
 					ItemSeparatorComponent={this.renderSeparator}
-					renderItem={({ item }) => (
-						<View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between', }}>
-							<View style={{ flexDirection: 'column', marginLeft: 10, marginBottom: 20 }}>
-								<Text style={styles.header}>{item.activity.project.customer.name}</Text>
-								<Text style={styles.subtitle}>{item.activity.project.name} </Text>
-								<Text style={styles.subtitle}>{item.activity.name}</Text>
-								<Text style={[styles.subtitle, {color: 'green'}]}>{item.start_date}</Text>
-							</View>
-							<View
-								style={{
-									flexDirection: 'column',
-									marginRight: 10,
-									marginBottom: 20,
-									alignItems: 'center'
-								}}
-							>
-								<Text style={[styles.subtitle, {color: 'orange'}]}>{item.duration} </Text>
-							</View>
-						</View>
+					renderItem={({ item, index }) => (
+						<FlatlistItem item={item} index={index} parentFlatList={this} dataList={this.props.filterTaskList}>
+
+						</FlatlistItem>
 					)}
 				/> 
 		);
@@ -196,8 +263,9 @@ class Timesheet extends Component {
 
 
 	render() {
+		
 		return (
-			<View style={{ flex: 1, flexDirection: 'column' }}>
+			<View style={{ flex: 1, flexDirection: 'column', backgroundColor: "#0196FF" }}>
 			
 				<CalendarStrip
 					style={{
@@ -230,6 +298,9 @@ class Timesheet extends Component {
 	}
 }
 
+//------------------------------ FLATLIST ITEM ----------------------------//
+
+
 const mapStateToProps = (state) => {
 	debugger;
 	const { accessToken } = state.loginReducers;
@@ -259,6 +330,7 @@ const styles = StyleSheet.create({
 		color: 'black',
 		fontSize: 24
 	}
+	
 
 });
 
@@ -267,5 +339,6 @@ export default connect(mapStateToProps, {
 	getTaskQueueDataFromStorage,
 	uploadOfflineTask,
 	updateFilteredList,
-	resetTimeEntryFlag
+	resetTimeEntryFlag,
+	deleteTask,
 })(Timesheet);

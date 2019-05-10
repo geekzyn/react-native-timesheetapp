@@ -98,14 +98,14 @@ class TimeEntry extends React.Component {
 						<CellGroup>
 							<Cell>
 								<TouchableOpacity onPress={this.onProjectClicked.bind(this)}>
-									<Label>PROJECT</Label>
-									<Label>{this.state.project}</Label>
+									<Label style={{color: 'black'}}>PROJECT</Label>
+									<Label style={{color: '#0196FF'}}>{this.state.project}</Label>
 								</TouchableOpacity>
 							</Cell>
 							<Cell>
 								<TouchableOpacity onPress={this.onActivityClicked.bind(this)}>
-									<Label>ACTIVITY</Label>
-									<Label>{this.state.activity.name}</Label>
+									<Label style={{color: 'black'}}>ACTIVITY</Label>
+									<Label style={{color: '#0196FF'}}>{this.state.activity.name}</Label>
 								</TouchableOpacity>
 							</Cell>
 							<CellInput
@@ -155,7 +155,7 @@ class TimeEntry extends React.Component {
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		backgroundColor: '#f3f3f3'
+		backgroundColor: '#0196FF'
 	}
 });
 

@@ -20,6 +20,7 @@ export const GET = 'GET';
 export const POST = 'POST';
 export const PUT = 'PUT';
 export const PATCH = 'PATCH';
+export const DELETE = 'DELETE';
 //API config with request method, end points
 export const SampleAPI = {
 	method: GET,
@@ -75,6 +76,14 @@ export const GetTotalEntriesTime = {
 	method: GET,
 	endpoint: '/api/reports/totalEntriesTimeMobile'
 };
+
+//Delete entires from list
+export const DeleteTaskAPI = {
+	method: DELETE,
+	endpoint: '/api/entries/'
+}
+
+
 
 export const SERVER_HEADER_KEYS_ACCEPT = 'Accept';
 export const SERVER_HEADER_KEYS_CONTENT_TYPE = 'Content-Type';

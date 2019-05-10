@@ -27,14 +27,7 @@ class ActivityList extends Component {
 
 	renderSeparator = () => {
 		return (
-			<View
-				style={{
-					height: 1,
-					width: '100%',
-					backgroundColor: '#CED0CE',
-					marginLeft: '0%'
-				}}
-			/>
+			<View style={{ height: 2, width: '100%', backgroundColor: 'white', marginLeft: '0%' }} />
 		);
 	};
 
@@ -63,8 +56,9 @@ class ActivityList extends Component {
 									activity: item,
 									project: this.props.selectedProject
 								})}
+								style={{backgroundColor: '#338DFF'}}
 							>
-								<Label>{item.name}</Label>
+								<Label style={{margin: 20, fontSize: 25}}>{item.name}</Label>
 							</TouchableOpacity>
 						);
 					}}

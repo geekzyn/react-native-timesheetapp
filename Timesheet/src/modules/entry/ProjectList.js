@@ -176,16 +176,16 @@ const mapStateToProps = (state) => {
 const styles = StyleSheet.create({
 	SectionHeaderStyle: {
 		backgroundColor: '#CCCCCC',
-		fontSize: 15,
+		fontSize: 25,
 		padding: 5,
 		color: 'black',
 		fontWeight: 'bold'
 	},
 	SectionListItemStyle: {
-		fontSize: 15,
+		fontSize: 20,
 		padding: 15,
-		color: '#000',
-		backgroundColor: '#F5F5F5'
+		color: 'black',
+		backgroundColor: '#338DFF'
 	}
 });
 

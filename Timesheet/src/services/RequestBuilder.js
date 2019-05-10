@@ -20,7 +20,9 @@ const EQUAL_TO = '=';
  * @param {object} query    - The query params to be added to the url
  */
 const getURL = (endpoint, query) => {
-	const url = devBaseURL + endpoint;
+
+	var updatedUrl = devBaseURL	+ endpoint
+	const url = (typeof query !== 'undefined' ) ? updatedUrl + query : updatedUrl ;
 
 	return url;
 };

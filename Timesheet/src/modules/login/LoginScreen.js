@@ -15,8 +15,8 @@ class LoginScreen extends Component {
 		super(props);
 		this.state = {
 			isLoading: false,
-			password: 'secret',
-			username: 'john@doe.com',
+			password: '',
+			username: '',
 			response: '',
 			accessToken: ''
 		};
