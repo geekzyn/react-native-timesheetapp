@@ -1,6 +1,7 @@
 import { devBaseURL } from './WebConfig.env';
 import Request from './Request';
 import AppStorage from '../utils/AppAsyncStorage';
+import Utils from '../utils/Utils';
 
 import {
 	SERVER_HEADER_KEYS_ACCEPT,
@@ -22,9 +23,9 @@ const EQUAL_TO = '=';
 const getURL = (endpoint, query) => {
 
 	var updatedUrl = devBaseURL	+ endpoint
-	const url = (typeof query !== 'undefined' ) ? updatedUrl + query : updatedUrl ;
-
-	return url;
+	debugger;
+	updatedUrl = (typeof query === "number" || typeof query === "string") ? updatedUrl + query : updatedUrl;
+	return updatedUrl;
 };
 
 /**

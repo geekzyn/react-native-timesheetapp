@@ -162,7 +162,7 @@ export const fetchActivities = (value)=> {
 		header['Authorization'] = 'Bearer ' + props.accessToken;
 		const { params, query } = RequestBody.activities(selectedProject);
 		debugger;
-		callAPI(GetActivitiesAPI, params, query, header)
+		callAPI(GetActivitiesAPI, params, {}, header)
 			.then((response) => {
 				if (typeof response !== 'undefined') {
 					dispatch({

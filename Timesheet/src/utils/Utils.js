@@ -3,10 +3,20 @@
  */
 export default class Utils {
 	static isEmpty(obj) {
-		return Object.keys(obj).length === 0;
+		debugger;
+		if (Object.keys(obj).length === 0) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	static isEmptyOrNull(obj) {
-		return obj === '' || obj == null;
+		debugger;
+		if (obj === '' || obj == null){
+			return true;
+		} else {
+			return false;
+		}
 	}
 }
