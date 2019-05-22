@@ -23,12 +23,12 @@ class LoginScreen extends Component {
 	}
 
 	componentDidMount() {
-		debugger;
+		
 		this.props.getAccessTokenFromStorage();
 	}
 
 	componentWillReceiveProps(nextProps) {
-		debugger;
+		
 		if (typeof nextProps.accessToken === 'string' && nextProps.accessToken !== '') {
 			this.props.navigation.navigate('TaskNavigator');
 		}
@@ -57,7 +57,7 @@ class LoginScreen extends Component {
 	// loginApiCall() {
 	// 	const { params, query } = RequestBody.login(this.state);
 	// 	const header = INITIAL_HEADERS;
-	// 	debugger;
+	// 	
 	// 	callAPI(LoginAPI, params, query, header)
 	// 		.then((response) => {
 	// 			const {message, access_token} = response;
@@ -100,11 +100,11 @@ class LoginScreen extends Component {
 	// 	AppStorage.getValue('accessToken')
 	// 		.then((result) => {
 	// 			console.log(result);
-	// 			debugger;
+	// 			
 	// 		})
 	// 		.catch((error) => {
 	// 			console.log(error);
-	// 			debugger;
+	// 			
 	// 		});
 	// }
 
@@ -113,7 +113,7 @@ class LoginScreen extends Component {
 			return <Spinner size="large" />;
 		}
 		return (
-			<View style={{ flex: 1, alignItems: 'center', backgroundColor: '#305578' }}>
+			<View style={{ flex: 1, alignItems: 'center', backgroundColor: '#2D034B' }}>
 				<Text style={{ marginTop: 100, fontSize: 30, fontWeight: '800', color: 'white' }}>ProjectTracker</Text>
 
 				<View style={{ alignItems: 'center', justifyContent: 'center', flex: 1, margin: 30 }}>
@@ -146,7 +146,7 @@ class LoginScreen extends Component {
 }
 
 const mapStateToProps = (state) => {
-	debugger;
+	
 	const { loading, isConnected, accessToken } = state.loginReducers;
 	return { loading, isConnected, accessToken };
 };

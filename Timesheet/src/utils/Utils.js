@@ -3,7 +3,7 @@
  */
 export default class Utils {
 	static isEmpty(obj) {
-		debugger;
+		
 		if (Object.keys(obj).length === 0) {
 			return true;
 		} else {
@@ -12,7 +12,7 @@ export default class Utils {
 	}
 
 	static isEmptyOrNull(obj) {
-		debugger;
+		
 		if (obj === '' || obj == null){
 			return true;
 		} else {

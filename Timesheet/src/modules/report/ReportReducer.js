@@ -10,7 +10,7 @@ export default (state = INITIAL_STATE, action) => {
 	switch (action.type) {
 
         case TOTAL_TODAYENTRY: 
-        debugger;
+        
 			return {
 				...state,
 				totalTodayEntries: action.payload

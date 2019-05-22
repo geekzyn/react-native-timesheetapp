@@ -14,17 +14,22 @@ import {
 	TIMEENTRY_SAVED,
 	RESET_ENTRYSAVE_FLAG
   } from '../../utils/Constants';
-import {GetProjectAPI, GetCustomerAPI, GetActivitiesAPI} from '../../services/APIConfig';
+import {
+	GetProjectAPI,
+	GetCustomerAPI,
+	GetActivitiesAPI,
+	EditTaskAPI,
+} from '../../services/APIConfig';
 
 export const saveTimeEntry = (props) => {
-	debugger;
+	
 	const { navigation } = props;
 	//dispatch an action to show loading spinner while data is being fetched.
 	return (dispatch) => {
 		const { params, query } = RequestBody.timeEntry(props.state);
 		updateDisplayList(dispatch, params, props);
 		const header = INITIAL_HEADERS;
-		debugger;
+		
 		callAPI(PostEntriesAPI, params, query, header)
 			.then((response) => {
 				if (typeof response !== 'undefined') {
@@ -44,7 +49,7 @@ export const saveTimeEntry = (props) => {
 				
 			})
 			.catch((error) => {
-				debugger;
+				
 				console.log(error.message);
 				updateOfflineQueueList(dispatch, params);
 				// navigation.navigate('Dashboard');
@@ -62,10 +67,47 @@ export const resetTimeEntryFlag = () => {
 	}
 }
 
+export const editTask = (props) => {
+	
+	const { navigation, activityId  } = props;
+	//dispatch an action to show loading spinner while data is being fetched.
+	return (dispatch) => {
+		const { params } = RequestBody.timeEntry(props.state);
+		updateDisplayList(dispatch, params, props);
+		const header = INITIAL_HEADERS;
+		
+		callAPI(EditTaskAPI, params, activityId, header)
+			.then((response) => {
+				if (typeof response !== 'undefined') {
+					const { message, access_token } = response;
+					if (message != null && message !== undefined) {
+						Alert.alert('New entry is successfully synced on server', message);
+					}
+					dispatch({
+						type: TIMEENTRY_SAVED,
+						payload: true
+					});
+				} else {
+					// navigation.navigate('Dashboard');
+				
+					updateOfflineQueueList(dispatch, params);
+				}
+				
+			})
+			.catch((error) => {
+				
+				console.log(error.message);
+				updateOfflineQueueList(dispatch, params);
+				// navigation.navigate('Dashboard');
+
+			});
+	};
+}
+ 
 const updateOfflineQueueList = (dispatch, queueItem) => {
 	alert("Updating the task in Offline Queue");
 	// to maintaine offline queue of task
-	debugger;
+	
 	dispatch({
 		type: OFFLINE_TASKQUEUE,
 		payload: queueItem
@@ -73,7 +115,7 @@ const updateOfflineQueueList = (dispatch, queueItem) => {
 }
 
 const updateDisplayList = (dispatch, queueItem, props) => {
-	debugger;
+	
 	dispatch({
 		type: NEW_OFFLINE_TASK_UPDATE ,
 		payload: queueItem
@@ -87,7 +129,7 @@ const updateDisplayList = (dispatch, queueItem, props) => {
 }
 
 export const saveSelectedProject = (props) => {
-	debugger;
+	
 	return (dispatch) => {
 		dispatch ({
 			type: SELECTED_PROJECT,
@@ -101,7 +143,7 @@ export const fetchProjectData = (props) => {
 	const {accessToken, navigation} = props;
 
 	header['Authorization'] = 'Bearer ' + accessToken;
-	debugger;
+	
 	//dispatch an action to show loading spinner while data is being fetched.
 	return (dispatch) => {
 
@@ -158,10 +200,10 @@ export const fetchActivities = (value)=> {
 	var header = INITIAL_HEADERS;
 	const {selectedProject, props} = value;
 	return (dispatch) => {
-		debugger;
+		
 		header['Authorization'] = 'Bearer ' + props.accessToken;
 		const { params, query } = RequestBody.activities(selectedProject);
-		debugger;
+		
 		callAPI(GetActivitiesAPI, params, {}, header)
 			.then((response) => {
 				if (typeof response !== 'undefined') {
@@ -189,14 +231,14 @@ export const uploadOfflineTask = (offlineTask) => {
 	//dispatch an action to show loading spinner while data is being fetched.
 	return (dispatch) => {
 		const header = INITIAL_HEADERS;
-		debugger;
+		
 		callAPI(SyncEntriesAPI, offlineTask, {}, header)
 			.then((response) => {
-				debugger;
+				
 				if (typeof response !== 'undefined') {
 					const { message, access_token } = response;
 					if (message != null && message !== undefined) {
-						debugger;
+						
 						Alert.alert('Success', message);
 						// reset the offline task queue
 						updateOfflineQueueList(dispatch, [])
@@ -208,7 +250,7 @@ export const uploadOfflineTask = (offlineTask) => {
 				
 			})
 			.catch((error) => {
-				debugger;
+				
 				console.log(error.message);
 				// updateOfflineQueueList(dispatch, props, params);
 			});

@@ -63,7 +63,7 @@ export default (state = INITIAL_STATE, action) => {
 				selectedProject: action.payload
 			}
 		case OFFLINE_TASKQUEUE: {
-			debugger;
+			
 			var list = state.offlineTaskQueueList
 			if (list === null || typeof list === 'undefined') {
 				list = [];

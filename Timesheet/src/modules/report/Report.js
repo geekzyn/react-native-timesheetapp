@@ -39,7 +39,7 @@ class Report extends Component {
 }
 
 const mapStateToProps = (state) => {
-	debugger;
+	
     const {totalTodayEntries, totalEntriesTime} = state.reportReducer;
     const { accessToken } = state.loginReducers;
 

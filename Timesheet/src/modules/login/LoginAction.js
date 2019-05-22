@@ -11,20 +11,20 @@ import {
 } from '../../utils/Constants';
 
 export const requestLogin = (props) => {
-	debugger;
+	
 	const { navigation } = props;
 	//dispatch an action to show loading spinner while data is being fetched.
 	return (dispatch) => {
 		dispatch({ type: SPINNER_LOADING_ACTION });
 		const { params, query } = RequestBody.login(props.state);
 		const header = INITIAL_HEADERS;
-		debugger;
+		
 		callAPI(LoginAPI, params, query, header)
 			.then((response) => {
-				debugger;
+				
 				if (typeof response !== 'undefined') {
 					const { message, access_token } = response;
-					debugger;
+					
 					if (message != null && message !== undefined) {
 						requestFail(dispatch, message);
 					} else {
@@ -57,7 +57,7 @@ export const getAccessTokenFromStorage = () => {
 	return(dispatch)=> {
 		AppStorage.getValue('accessToken')
 		.then((result) => {
-			debugger;
+			
 			dispatch({
 				type: LOGIN_SUCCESS,
 				payload: result

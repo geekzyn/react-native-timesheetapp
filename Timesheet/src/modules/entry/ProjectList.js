@@ -24,11 +24,11 @@ class ProjectList extends Component {
 			activityData: [],
 			selectedProjectId: null,
 		};
-		debugger;
+		
 	}
 
 	componentDidMount() {
-		debugger;
+		
 		const {customerList, projectList } = this.props;
 		if (this.props.customerList == null || this.props.customerList.length == 0) {
 			this.props.fetchCustomerData(this.props);
@@ -39,7 +39,7 @@ class ProjectList extends Component {
 	}
 
 	componentWillReceiveProps(nextProps){
-		debugger;
+		
 		// Handling the undefined in offline mode
 		let {projectList = [], customerList = [] } = nextProps;
 		
@@ -52,7 +52,7 @@ class ProjectList extends Component {
 			customerList = [];
 		}
 		 if ((projectList.length > 0 && customerList.length > 0) && this.state.processedData.length == 0) {
-			debugger;
+			
 			this.processDisplayData(projectList, customerList);
 		}
 	}
@@ -167,7 +167,7 @@ class ProjectList extends Component {
 }
 
 const mapStateToProps = (state) => {
-	debugger;
+	
 	const { accessToken } = state.loginReducers;
 	const {projectList, customerList} = state.timeEntryReducer;
 	return { accessToken, projectList, customerList };

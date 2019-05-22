@@ -15,7 +15,7 @@ export default (state = INITIAL_STATE, action) => {
 				loading: false
 			};
 		case REQUEST_FAIL_ACTION:
-			debugger;
+			
 			return {
 				...state,
 				loading: false,

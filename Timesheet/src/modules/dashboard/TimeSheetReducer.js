@@ -20,13 +20,13 @@ export default (state = INITIAL_STATE, action) => {
 				newTaskList: action.payload,
 			};
 		case UPDATE_FILTER_LIST: 
-		debugger;
+		
 			return {
 				...state,
 				filterTaskList: action.payload
 			}
 		case NEW_OFFLINE_TASK_UPDATE: {
-			debugger;
+			
 			var list = state.newTaskList;
 			if (list === null || typeof list === 'undefined') {
 				list = [];

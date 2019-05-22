@@ -9,10 +9,10 @@ export default class Requests {
      */
 	static send(URI, header, method, body) {
 		const MILLISECONDS = 30000;
-		debugger;
+		
 		const request = Requests.requestBuilder(header, method, body);
 		console.log(request);
-		debugger;
+		
 		return Requests.handleTimeOut(MILLISECONDS, fetch(URI, request))
 			.then((response) => Requests.processResponse(response))
 			.catch((error) => {
@@ -35,13 +35,13 @@ export default class Requests {
 		return new Promise(async (resolve, reject) => {
 			if (!hasError) console.log(response);
 			if (response.handledError) {
-				debugger;
+				
 				if (response.handledError.message === 'Network request failed') {
 						return reject(response.handledError.message);
 				}
 				return reject(response.handledError);
 			}
-			debugger;
+			
 			return resolve(JSON.parse(response._bodyInit));
 		});
 	}

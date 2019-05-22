@@ -11,7 +11,6 @@ import { SERVER_TASK_LIST,
 } from '../../utils/Constants';
 
 export const getTaskEntries = (props) => {
-	debugger;
 	//dispatch an action to show loading spinner while data is being fetched.
 	return (dispatch) => {
 		var header = INITIAL_HEADERS;
@@ -40,7 +39,7 @@ export const getTaskEntries = (props) => {
 
 export const updateFilteredList = (list) => {
 	return (dispatch) => {
-		debugger;
+		
 		dispatch({
 			type: UPDATE_FILTER_LIST,
 			payload: list,
@@ -50,13 +49,13 @@ export const updateFilteredList = (list) => {
 
 
 export const deleteTask = (taskId, props) => {
-	debugger;
+	
 	var header = INITIAL_HEADERS;
 	return (dispatch) => {
 	header['Authorization'] = 'Bearer ' + props;
 	callAPI(DeleteTaskAPI, {}, taskId, header)
 	.then((response) => {
-		debugger;
+		
 		if (typeof response !== 'undefined') {
 			
 		}
@@ -86,7 +85,7 @@ const getTimeSheetDataFromStorage = (dispatch) => {
 			})
 			.catch((error) => {
 				console.log(error);
-				debugger;
+				
 			});
 };
 
@@ -102,7 +101,7 @@ export const getTaskQueueDataFromStorage = () => {
 		})
 		.catch((error) => {
 			console.log(error);
-			debugger;
+			
 		});
 	}
 	

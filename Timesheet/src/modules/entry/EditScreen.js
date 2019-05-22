@@ -4,24 +4,26 @@ import { CellInput, CellGroup, CellDatePicker, CellSlider, CellSwitch, Cell } fr
 import Moment from 'moment';
 import { Label, Button } from 'native-base';
 import Utils from '../../utils/Utils';
-import { saveTimeEntry } from '../entry/EntryAction';
+import {  editTask } from './EntryAction';
 import { connect } from 'react-redux';
+import TimeEntry from './TimeEntry';
 
 
-class TimeEntry extends React.Component {
+class EditScreen extends React.Component {
 	constructor(props) {
 		super(props);
-		
-		const { activity, project } = this.props.navigation.state.params;
+		debugger;
+		const { item } = this.props.navigation.state.params;
 		this.state = {
 			activityFromTime: new Date(),
 			activityToTime: new Date(),
-			activity,
-			project,
-			duration: 0,
-			startDate: new Date(),
-			endDate: new Date(),
-			description: '',
+			activity: item.activity,
+			project: item.activity.project,
+			duration: item.duration,
+			startDate: new Date(item.start_date),
+			endDate: new Date(item.end_date),
+			description: item.description,
+			id: item.id,
 		};
 	}
 
@@ -79,7 +81,7 @@ class TimeEntry extends React.Component {
 			return;
 		}
 		
-		this.props.saveTimeEntry({ state: this.state, navigation: this.props.navigation });
+		this.props.editTask({ state: this.state, navigation: this.props.navigation, activityId: this.state.id  });
 	};
 
 	onCancelPressed = () => {
@@ -88,7 +90,7 @@ class TimeEntry extends React.Component {
 	};
 
 	validateEntries() {
-		var { activityFromTime, activityToTime, description, project } = this.state;
+		var { activityFromTime, activityToTime, description } = this.state;
 
 		if (Utils.isEmptyOrNull(description)) {
 			return false;
@@ -100,8 +102,7 @@ class TimeEntry extends React.Component {
 	render() {
 		return (
 			<View style={styles.container}>
-				<Label style={{fontSize: 32, color: 'white', alignSelf: "center"}}>CREATE NEW TASK</Label>
-
+				<Label style={{fontSize: 32, color: 'white', alignSelf: "center"}}>EDIT THE TASK</Label>
 				<View style={{ flex: 1, borderTopWidth: 1, borderTopColor: '#eee', paddingLeft: 10, paddingRight: 10 }}>
 					<ScrollView>
 						<Label style={{fontSize: 30, color: 'white', marginTop: 20}}>{"TASK DETAILS: "}</Label>
@@ -109,7 +110,7 @@ class TimeEntry extends React.Component {
 							<Cell>
 								<TouchableOpacity onPress={this.onProjectClicked.bind(this)}>
 									<Label style={{color: 'black', fontSize: 20}}>PROJECT</Label>
-									<Label style={{color: '#033C8B', fontSize: 18}}>{this.state.project}</Label>
+									<Label style={{color: '#033C8B', fontSize: 18}}>{this.state.project.name}</Label>
 								</TouchableOpacity>
 							</Cell>
 							<Cell>
@@ -118,9 +119,13 @@ class TimeEntry extends React.Component {
 									<Label style={{color: '#033C8B', fontSize: 18}}>{this.state.activity.name}</Label>
 								</TouchableOpacity>
 							</Cell>
+							<Cell>
+								<Label style={{color: 'black', fontSize: 20}}>{"Notes: Description"}</Label>
+							</Cell>
 							<CellInput
-								style={{fontSize: 18, color: 'black'}}
+								style={{fontSize: 18, color: '#033C8B'}}
 								title="NOTES"
+								value={this.state.description}
 								onChangeText={(description) => this.setState({ description })}
 								multiline
 								autoResize
@@ -176,8 +181,8 @@ class TimeEntry extends React.Component {
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		backgroundColor: '#033C8B'
+		backgroundColor: '#03264F'
 	}
 });
 
-export default connect(null, { saveTimeEntry })(TimeEntry);
+export default connect(null, { editTask })(EditScreen);

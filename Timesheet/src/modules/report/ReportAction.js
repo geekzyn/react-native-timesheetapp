@@ -14,7 +14,7 @@ import {
 } from '../../utils/Constants';
 
 export const getTotalTodayEntries = (props) => {
-    debugger;
+    
     var header = INITIAL_HEADERS;
 	const {accessToken} = props;
 
@@ -23,7 +23,7 @@ export const getTotalTodayEntries = (props) => {
 
 		callAPI(GetTotalTodayEntriesAPI, {}, {}, header)
 			.then((response) => {
-                debugger;
+                
 				if (typeof response !== 'undefined' && typeof response == 'number') {
 					dispatch({
 						type: TOTAL_TODAYENTRY,
@@ -34,7 +34,7 @@ export const getTotalTodayEntries = (props) => {
 				}
 			})
 			.catch((error) => {
-                debugger;
+                
 				alert()
 				// getProjectListFromStorage(dispatch, navigation);
 			});
@@ -45,7 +45,7 @@ export const getTotalTodayEntries = (props) => {
 //------------ AsyncStorage for TimeSheet Data ------//
 
 export const getTotalTodayTime = (props) => {
-    debugger;
+    
     var header = INITIAL_HEADERS;
 	const {accessToken} = props;
 
@@ -54,7 +54,7 @@ export const getTotalTodayTime = (props) => {
 
 		callAPI(GetTotalEntriesTime, {}, {}, header)
 			.then((response) => {
-                debugger;
+                
 				if (typeof response !== 'undefined' && typeof response == 'number') {
 					dispatch({
 						type: TOTAL_TODAYENTRY_TIME,
@@ -64,7 +64,7 @@ export const getTotalTodayTime = (props) => {
 				}
 			})
 			.catch((error) => {
-                debugger;
+                
 				alert()
 				// getProjectListFromStorage(dispatch, navigation);
 			});

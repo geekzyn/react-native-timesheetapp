@@ -11,17 +11,17 @@ class ActivityList extends Component {
 
 	componentWillReceiveProps(nextProps) {
 		const {selectedProject} = this.props;
-		debugger;
+		
 	}
 
 	// componentWillMount() {
-	// 	debugger;
+	// 	
 	// }
 
 	componentDidMount() {}
 
 	onActivityClicked = (props) => {
-		debugger;
+		
 		this.props.navigation.navigate('TimeEntry', props);
 	};
 
@@ -49,7 +49,7 @@ class ActivityList extends Component {
 					ItemSeparatorComponent={this.renderSeparator}
 					data={this.props.activityList}
 					renderItem={({ item }) => {
-						debugger;
+						
 						return (
 							<TouchableOpacity
 								onPress={this.onActivityClicked.bind(this, {
@@ -69,7 +69,7 @@ class ActivityList extends Component {
 }
 
 const mapStateToProps = (state) => {
-	debugger;
+	
 	const { activityList, selectedProject  } = state.timeEntryReducer;
 	return { activityList, selectedProject };
 }

@@ -83,6 +83,11 @@ export const DeleteTaskAPI = {
 	endpoint: '/api/entries/'
 }
 
+export const EditTaskAPI = {
+	method: PUT,
+	endpoint: '/api/entries/'
+}
+
 
 
 export const SERVER_HEADER_KEYS_ACCEPT = 'Accept';

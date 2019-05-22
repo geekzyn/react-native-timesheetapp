@@ -6,6 +6,7 @@ import ProjectList from '../entry/ProjectList';
 import ActivityList from '../entry/ActivityList';
 import TimeEntry from '../entry/TimeEntry';
 import Report from '../report/Report';
+import EditScreen from '../entry/EditScreen';
 
 const TaskNavigator = createStackNavigator({
 	TimeSheet: {
@@ -22,6 +23,9 @@ const TaskNavigator = createStackNavigator({
 	},
 	TimeEntry: {
 		screen: TimeEntry
+	},
+	EditScreen: {
+		screen: EditScreen
 	},
 	ReportScreen: {
 		screen: Report,

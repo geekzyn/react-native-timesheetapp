@@ -18,7 +18,12 @@ class FlatlistItem extends Component {
 			activeRowKey: null,
 
         });
-    }
+		}
+		
+		onItemPress(item) {
+			debugger;
+			this.props.navigation.navigate('EditScreen', {item});
+		}
    
     render() {
 		const swipeSettings = {
@@ -41,11 +46,12 @@ class FlatlistItem extends Component {
 							[                              
 							  {text: 'No', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
 							  {text: 'Yes', onPress: () => {   
-									debugger;
+									
 									this.props.parentFlatList.props.deleteTask(this.props.item.id, this.props.parentFlatList.props.accessToken);
 									this.props.dataList.splice(this.props.index, 1); 
 								// //Refresh FlatList ! 
 									this.props.parentFlatList.refreshFlatList(deletingRow);
+									this.props.parentFlatList.props.newTaskList.splice(this.props.index, 1);
 							  }},
 							],
 							{ cancelable: true }
@@ -59,6 +65,8 @@ class FlatlistItem extends Component {
 		}
       return (
         <Swipeout {...swipeSettings} style={{backgroundColor: 'white'}}>
+						<TouchableOpacity onPress={this.onItemPress.bind(this, this.props.item)}>
+
 						<View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between', }}>
 							<View style={{ flexDirection: 'column', marginLeft: 10, marginBottom: 20 }}>
 								<Text style={styles.header}>{this.props.item.activity.project.customer.name}</Text>
@@ -77,6 +85,8 @@ class FlatlistItem extends Component {
 								<Text style={[styles.subtitle, {color: 'orange'}]}>{this.props.item.duration} </Text>
 							</View>
 						</View>
+						</TouchableOpacity>
+
 					</Swipeout>      
 		);
     }
@@ -84,7 +94,7 @@ class FlatlistItem extends Component {
 
 class Timesheet extends Component {
 	constructor(props) {
-		debugger;
+		
 		super(props);
 		this.state = {
 			isConnected: false,
@@ -106,10 +116,10 @@ class Timesheet extends Component {
 
 //------------------- Component Class Methods -------------------//
 	componentDidMount() {
-		debugger;
+		
 
 		// added the event listener to know if connected.
-		debugger;
+		
 		this.props.getTaskQueueDataFromStorage();
 		this.props.getTaskEntries(this.props.accessToken);
 
@@ -123,15 +133,15 @@ class Timesheet extends Component {
 	
 	onConnectionChange = connected =>  {
 		if (connected) {
-			debugger;
+			
 			this.uploadOfflineData();
 		}
 	}
 
 	componentWillReceiveProps(nextProps) {
-		debugger;
+		
 		if (nextProps.timeEntrySaved) {
-			debugger;
+			
 			this.props.resetTimeEntryFlag();
 			this.props.getTaskEntries(this.props.accessToken);
 		} else if (nextProps){
@@ -148,7 +158,7 @@ class Timesheet extends Component {
 	};
 
 	onCancelPressed = () => {
-		debugger;
+		
 		this.props.navigation.pop();
 	};
 
@@ -163,7 +173,7 @@ class Timesheet extends Component {
 
 
 	uploadOfflineData() {
-		debugger;
+		
 		if (this.props.offlineTaskQueueList !== null && typeof this.props.offlineTaskQueueList !== 'undefined' && this.props.offlineTaskQueueList.length > 0) 
 		{
 			this.props.uploadOfflineTask(this.props.offlineTaskQueueList);
@@ -186,7 +196,7 @@ class Timesheet extends Component {
 	}
 
 	filterTaskByDate = (date) => {
-	debugger;
+	
 	 var taskList = this.props.newTaskList.filter((task) => {
 
 			let formatedDate = moment(task.start_date).format("MMM Do YY");
@@ -201,7 +211,7 @@ class Timesheet extends Component {
 	}
 
 	displayListOfData = () => {
-		debugger;
+		
 		const {newTaskList} = this.props
 		if (this.state.isDateSelected === false ) {
 			if (typeof newTaskList !== 'undefined' && newTaskList.length > 0) {
@@ -226,7 +236,10 @@ class Timesheet extends Component {
 				}}
 			  />
 			);
-		  };
+			}
+
+			
+		
 
 		return ( 
 			<FlatList
@@ -234,9 +247,9 @@ class Timesheet extends Component {
 					data={this.props.filterTaskList}
 					ItemSeparatorComponent={this.renderSeparator}
 					renderItem={({ item, index }) => (
-						<FlatlistItem item={item} index={index} parentFlatList={this} dataList={this.props.filterTaskList}>
-
-						</FlatlistItem>
+								<FlatlistItem item={item} index={index} parentFlatList={this} dataList={this.props.filterTaskList} navigation={this.props.navigation}>
+								</FlatlistItem>
+						
 					)}
 				/> 
 		);
@@ -265,7 +278,7 @@ class Timesheet extends Component {
 	render() {
 		
 		return (
-			<View style={{ flex: 1, flexDirection: 'column', backgroundColor: "#0196FF" }}>
+			<View style={{ flex: 1, flexDirection: 'column', backgroundColor: "#033C8B" }}>
 			
 				<CalendarStrip
 					style={{
@@ -288,7 +301,7 @@ class Timesheet extends Component {
 
 				<ActionButton
 					style={{ position: 'absolute', alignSelf: 'flex-end', bottom: 50, paddingRight: 100 }}
-					buttonColor="rgba(231,76,60,1)"
+					buttonColor="#FF3636"
 					onPress={this.onPress.bind(this)}
 				/>
 
@@ -302,7 +315,7 @@ class Timesheet extends Component {
 
 
 const mapStateToProps = (state) => {
-	debugger;
+	
 	const { accessToken } = state.loginReducers;
 	const {offlineTaskQueueList, timeEntrySaved } = state.timeEntryReducer;
 	const { serverTaskList, newTaskList, filterTaskList } = state.timeSheetReducer;

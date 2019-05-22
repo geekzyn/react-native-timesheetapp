@@ -23,7 +23,7 @@ const EQUAL_TO = '=';
 const getURL = (endpoint, query) => {
 
 	var updatedUrl = devBaseURL	+ endpoint
-	debugger;
+	
 	updatedUrl = (typeof query === "number" || typeof query === "string") ? updatedUrl + query : updatedUrl;
 	return updatedUrl;
 };
@@ -53,16 +53,16 @@ const addQueryParams = (url, query) => {
  */
 export const callAPI = async (config, params, query, header) => {
 	const processedParams = !params ? {} : params;
-	debugger;
+	
 	const url = getURL(config.endpoint, query);
 	// Call fetch methods interface
-	debugger;
+	
 	try {
 		const parsedData = await Request.send(url, header, config.method, processedParams);
-		debugger;
+		
 		return parsedData;
 	} catch (err) {
-		debugger;
+		
 		console.log(err);
 		throw err;
 	}
