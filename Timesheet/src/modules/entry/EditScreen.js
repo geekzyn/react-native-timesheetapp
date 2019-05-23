@@ -14,6 +14,7 @@ class EditScreen extends React.Component {
 		super(props);
 		debugger;
 		const { item } = this.props.navigation.state.params;
+		debugger;
 		this.state = {
 			activityFromTime: new Date(),
 			activityToTime: new Date(),
@@ -81,7 +82,7 @@ class EditScreen extends React.Component {
 			return;
 		}
 		
-		this.props.editTask({ state: this.state, navigation: this.props.navigation, activityId: this.state.id  });
+		this.props.editTask({ state: this.state, navigation: this.props.navigation, });
 	};
 
 	onCancelPressed = () => {
@@ -100,12 +101,13 @@ class EditScreen extends React.Component {
 
 	// UI
 	render() {
+		debugger;
 		return (
 			<View style={styles.container}>
-				<Label style={{fontSize: 32, color: 'white', alignSelf: "center"}}>EDIT THE TASK</Label>
+				<Label style={{fontSize: 32, color: 'black', alignSelf: "center"}}>EDIT THE ENTRY</Label>
 				<View style={{ flex: 1, borderTopWidth: 1, borderTopColor: '#eee', paddingLeft: 10, paddingRight: 10 }}>
 					<ScrollView>
-						<Label style={{fontSize: 30, color: 'white', marginTop: 20}}>{"TASK DETAILS: "}</Label>
+						<Label style={{fontSize: 30, color: 'black', marginTop: 20}}>{"ENTRY DETAILS: "}</Label>
 						<CellGroup>
 							<Cell>
 								<TouchableOpacity onPress={this.onProjectClicked.bind(this)}>
@@ -132,7 +134,7 @@ class EditScreen extends React.Component {
 								rows={4}
 							/>
 						</CellGroup>
-						<Label style={{fontSize: 30, color: 'white', marginTop: 20}}>{"TASK TIMING: "}</Label>
+						<Label style={{fontSize: 30, color: 'black', marginTop: 20}}>{"ENTRY TIMING: "}</Label>
 						<CellGroup>
 							<CellDatePicker
 								icon="date-range"
@@ -181,7 +183,7 @@ class EditScreen extends React.Component {
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		backgroundColor: '#03264F'
+		backgroundColor: 'white'
 	}
 });
 

@@ -11,14 +11,15 @@ const RequestBody = {
 		
 
 		const params = {
+			id: props.id,
 			project_id: props.activity.project_id,
 			activity_id: props.activity.id,
 			description: props.description,
 			duration: props.duration,
 			// start_date: new Date(props.date).toDateString(),
 			start_date: props.startDate,
-			start_time: props.activityFromTime,
-			end_time: props.activityToTime,
+			// start_time: props.activityFromTime,
+			// end_time: props.activityToTime,
 			end_date: props.endDate,
 			activity: {name: props.activity.name, project: {name: props.project, customer: {name: "Temp Customer"}}},
 		};

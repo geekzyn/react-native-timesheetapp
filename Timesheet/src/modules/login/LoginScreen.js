@@ -113,14 +113,14 @@ class LoginScreen extends Component {
 			return <Spinner size="large" />;
 		}
 		return (
-			<View style={{ flex: 1, alignItems: 'center', backgroundColor: '#2D034B' }}>
-				<Text style={{ marginTop: 100, fontSize: 30, fontWeight: '800', color: 'white' }}>ProjectTracker</Text>
+			<View style={{ flex: 1, alignItems: 'center', backgroundColor: 'white' }}>
+				<Text style={{ marginTop: 100, fontSize: 30, fontWeight: '800', color: '#0f56b8' }}>Timesheet</Text>
 
 				<View style={{ alignItems: 'center', justifyContent: 'center', flex: 1, margin: 30 }}>
 					<View style={{ flexDirection: 'row', backgroundColor: '#0f56b8' }}>
 						<TextInput
 							style={styles.loginTextField}
-							placeholder="UserName"
+							placeholder="Email"
 							placeholderTextColor={'#738382'}
 							onChangeText={(text) => this.setState({ username: text })}
 						/>

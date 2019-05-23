@@ -68,15 +68,14 @@ export const resetTimeEntryFlag = () => {
 }
 
 export const editTask = (props) => {
-	
-	const { navigation, activityId  } = props;
+	debugger;
 	//dispatch an action to show loading spinner while data is being fetched.
 	return (dispatch) => {
 		const { params } = RequestBody.timeEntry(props.state);
 		updateDisplayList(dispatch, params, props);
 		const header = INITIAL_HEADERS;
-		
-		callAPI(EditTaskAPI, params, activityId, header)
+		debugger;
+		callAPI(EditTaskAPI, params, 0, header)
 			.then((response) => {
 				if (typeof response !== 'undefined') {
 					const { message, access_token } = response;

@@ -100,11 +100,11 @@ class TimeEntry extends React.Component {
 	render() {
 		return (
 			<View style={styles.container}>
-				<Label style={{fontSize: 32, color: 'white', alignSelf: "center"}}>CREATE NEW TASK</Label>
+				<Label style={{fontSize: 32, color: 'black', alignSelf: "center"}}>CREATE NEW ENTRY</Label>
 
 				<View style={{ flex: 1, borderTopWidth: 1, borderTopColor: '#eee', paddingLeft: 10, paddingRight: 10 }}>
 					<ScrollView>
-						<Label style={{fontSize: 30, color: 'white', marginTop: 20}}>{"TASK DETAILS: "}</Label>
+						<Label style={{fontSize: 30, color: 'black', marginTop: 20}}>{"ENTRY DETAILS: "}</Label>
 						<CellGroup>
 							<Cell>
 								<TouchableOpacity onPress={this.onProjectClicked.bind(this)}>
@@ -127,7 +127,7 @@ class TimeEntry extends React.Component {
 								rows={4}
 							/>
 						</CellGroup>
-						<Label style={{fontSize: 30, color: 'white', marginTop: 20}}>{"TASK TIMING: "}</Label>
+						<Label style={{fontSize: 30, color: 'black', marginTop: 20}}>{"ENTRY TIMING: "}</Label>
 						<CellGroup>
 							<CellDatePicker
 								icon="date-range"
@@ -176,7 +176,7 @@ class TimeEntry extends React.Component {
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		backgroundColor: '#033C8B'
+		backgroundColor: 'white'
 	}
 });
 

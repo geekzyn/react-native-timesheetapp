@@ -278,7 +278,7 @@ class Timesheet extends Component {
 	render() {
 		
 		return (
-			<View style={{ flex: 1, flexDirection: 'column', backgroundColor: "#033C8B" }}>
+			<View style={{ flex: 1, flexDirection: 'column', backgroundColor: "white" }}>
 			
 				<CalendarStrip
 					style={{
