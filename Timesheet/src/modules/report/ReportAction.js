@@ -34,9 +34,6 @@ export const getTotalTodayEntries = (props) => {
 				}
 			})
 			.catch((error) => {
-                
-				alert()
-				// getProjectListFromStorage(dispatch, navigation);
 			});
 	}
 };
@@ -64,9 +61,6 @@ export const getTotalTodayTime = (props) => {
 				}
 			})
 			.catch((error) => {
-                
-				alert()
-				// getProjectListFromStorage(dispatch, navigation);
 			});
 	}
 };

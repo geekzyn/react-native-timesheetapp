@@ -53,36 +53,11 @@ class LoginScreen extends Component {
 		}
 		return isValid;
 	}
-	// #3
-	// loginApiCall() {
-	// 	const { params, query } = RequestBody.login(this.state);
-	// 	const header = INITIAL_HEADERS;
-	// 	
-	// 	callAPI(LoginAPI, params, query, header)
-	// 		.then((response) => {
-	// 			const {message, access_token} = response;
-	// 			if (message != null && message !== undefined) {
-	// 				this.showAlert(message);
-	// 			}  else {
-	// 				this.setState({
-	// 					isLoading: false,
-	// 					accessToken: access_token
-	// 				});
-	// 				this.showAlert('response');
-	// 				AppStorage.setValue('accessToken', access_token);
-	// 				this.props.navigation.navigate('Dashboard');
-	// 			}
-	// 		})
-	// 		.catch((error) => {
-	// 			console.log(error);
-	// 		});
-	// }
-	//------ Login Helper methods End ---//
 
 	//Alert message
 	showAlert(message) {
 		Alert.alert(
-			'TRACKER ALERT',
+			'ALERT',
 			message,
 			[
 				{

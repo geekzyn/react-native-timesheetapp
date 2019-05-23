@@ -21,7 +21,7 @@ class FlatlistItem extends Component {
 		}
 		
 		onItemPress(item) {
-			debugger;
+			
 			this.props.navigation.navigate('EditScreen', {item});
 		}
    
@@ -72,7 +72,7 @@ class FlatlistItem extends Component {
 								<Text style={styles.header}>{this.props.item.activity.project.customer.name}</Text>
 								<Text style={styles.subtitle}>{this.props.item.activity.project.name} </Text>
 								<Text style={styles.subtitle}>{this.props.item.activity.name}</Text>
-								<Text style={[styles.subtitle, {color: 'green'}]}>{this.props.item.start_date}</Text>
+								<Text style={[styles.subtitle, {color: 'green'}]}>{new Date(this.props.item.start_date).toLocaleTimeString() +" - "+ new Date(this.props.item.end_date).toLocaleTimeString()}</Text>
 							</View>
 							<View
 								style={{
@@ -205,7 +205,6 @@ class Timesheet extends Component {
 			}
 			return date === formatedDate;
 		});
-		// alert("TaskList: " + taskList.length)
 		this.props.updateFilteredList(taskList);
 
 	}

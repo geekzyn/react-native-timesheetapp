@@ -46,7 +46,7 @@ class TimeEntry extends React.Component {
 	}
 
 	handleOnStartDateSelected = (date) => {
-		debugger;
+		
 
 		var day = date.getDate();
 		var month = date.getMonth();
@@ -100,7 +100,7 @@ class TimeEntry extends React.Component {
 	// Save and Cancle Action
 	onSaveData = () => {
 		if (this.validateEntries() === false) {
-			Alert.alert('TRACKER ALERT', 'Please fill the details.');
+			Alert.alert('ALERT', 'Please fill the details.');
 			return;
 		}
 		

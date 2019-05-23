@@ -12,9 +12,9 @@ import TimeEntry from './TimeEntry';
 class EditScreen extends React.Component {
 	constructor(props) {
 		super(props);
-		debugger;
+		
 		const { item } = this.props.navigation.state.params;
-		debugger;
+		
 		this.state = {
 			activityFromTime: new Date(item.start_date),
 			activityToTime: new Date(item.end_date),
@@ -49,7 +49,7 @@ class EditScreen extends React.Component {
 	}
 
 	handleOnStartDateSelected = (date) => {
-		debugger;
+		
 		var day = date.getDate();
 		var month = date.getMonth();
 		var year = date.getFullYear();
@@ -67,7 +67,7 @@ class EditScreen extends React.Component {
 	};
 
 	handleOnEndDateSelected = (date) => {
-		debugger;
+		
 		var day = date.getDate();
 		var month = date.getMonth();
 		var year = date.getFullYear();
@@ -85,7 +85,7 @@ class EditScreen extends React.Component {
 	};
 
 	handleOnTimeSelected = () => {
-		debugger;
+		
 		this.setState({
 			duration: ((this.state.activityToTime - this.state.activityFromTime) / (1000 * 60 * 60)) % 24
 		});
@@ -94,7 +94,7 @@ class EditScreen extends React.Component {
 	// Save and Cancle Action
 	onSaveData = () => {
 		if (this.validateEntries() === false) {
-			Alert.alert('TRACKER ALERT', 'Please fill the details.');
+			Alert.alert('ALERT', 'Please fill the details.');
 			return;
 		}
 		
@@ -117,7 +117,7 @@ class EditScreen extends React.Component {
 
 	// UI
 	render() {
-		debugger;
+		
 		return (
 			<View style={styles.container}>
 				<Label style={{fontSize: 32, color: 'black', alignSelf: "center"}}>EDIT THE ENTRY</Label>

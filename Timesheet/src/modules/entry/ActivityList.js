@@ -34,17 +34,6 @@ class ActivityList extends Component {
 	render() {
 		return (
 			<Container style={{ backgroundColor: '#f3f3f3' }}>
-				<Header searchBar rounded>
-					<Item>
-						<Icon name="ios-search" />
-						<Input placeholder="Search" />
-						<Icon name="ios-people" />
-					</Item>
-
-					<Button transparent>
-						<Text>Search Task</Text>
-					</Button>
-				</Header>
 				<FlatList
 					ItemSeparatorComponent={this.renderSeparator}
 					data={this.props.activityList}
