@@ -17,10 +17,10 @@ const RequestBody = {
 			description: props.description,
 			duration: props.duration,
 			// start_date: new Date(props.date).toDateString(),
-			start_date: props.startDate,
+			start_date: props.activityFromTime,
 			// start_time: props.activityFromTime,
 			// end_time: props.activityToTime,
-			end_date: props.endDate,
+			end_date: props.activityToTime,
 			activity: {name: props.activity.name, project: {name: props.project, customer: {name: "Temp Customer"}}},
 		};
 		

@@ -46,14 +46,39 @@ class TimeEntry extends React.Component {
 	}
 
 	handleOnStartDateSelected = (date) => {
+		debugger;
+
+		var day = date.getDate();
+		var month = date.getMonth();
+		var year = date.getFullYear();
+		// var value = this.stat
+
+		var newStartTime = this.state.activityFromTime;
+		newStartTime.setDate(day);
+		newStartTime.setMonth(month);
+		newStartTime.setFullYear(year);
+
 		this.setState({
-			startDate: date
+			startDate: date,
+			activityFromTime: newStartTime
 		});
 	};
 
 	handleOnEndDateSelected = (date) => {
+
+		var day = date.getDate();
+		var month = date.getMonth();
+		var year = date.getFullYear();
+		// var value = this.stat
+
+		var newEndTime = this.state.activityToTime;
+		newEndTime.setDate(day);
+		newEndTime.setMonth(month);
+		newEndTime.setFullYear(year);
+		
 		this.setState({
-			endDate: date
+			endDate: date,
+			activityToTime: newEndTime
 		});
 	};
 

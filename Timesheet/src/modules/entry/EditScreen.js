@@ -16,8 +16,8 @@ class EditScreen extends React.Component {
 		const { item } = this.props.navigation.state.params;
 		debugger;
 		this.state = {
-			activityFromTime: new Date(),
-			activityToTime: new Date(),
+			activityFromTime: new Date(item.start_date),
+			activityToTime: new Date(item.end_date),
 			activity: item.activity,
 			project: item.activity.project,
 			duration: item.duration,
@@ -49,30 +49,46 @@ class EditScreen extends React.Component {
 	}
 
 	handleOnStartDateSelected = (date) => {
+		debugger;
+		var day = date.getDate();
+		var month = date.getMonth();
+		var year = date.getFullYear();
+		// var value = this.stat
+
+		var newStartTime = this.state.activityFromTime;
+		newStartTime.setDate(day);
+		newStartTime.setMonth(month);
+		newStartTime.setFullYear(year);
+
 		this.setState({
-			startDate: date
+			startDate: date,
+			activityFromTime: newStartTime
 		});
 	};
 
 	handleOnEndDateSelected = (date) => {
+		debugger;
+		var day = date.getDate();
+		var month = date.getMonth();
+		var year = date.getFullYear();
+		// var value = this.stat
+
+		var newEndTime = this.state.activityToTime;
+		newEndTime.setDate(day);
+		newEndTime.setMonth(month);
+		newEndTime.setFullYear(year);
+		
 		this.setState({
-			endDate: date
+			endDate: date,
+			activityToTime: newEndTime
 		});
 	};
 
 	handleOnTimeSelected = () => {
+		debugger;
 		this.setState({
 			duration: ((this.state.activityToTime - this.state.activityFromTime) / (1000 * 60 * 60)) % 24
 		});
-	};
-
-	// Navigation on project and activity click
-	onProjectClicked = () => {
-		this.props.navigation.navigate('ProjectList');
-	};
-
-	onActivityClicked = () => {
-		this.props.navigation.pop();
 	};
 
 	// Save and Cancle Action
@@ -110,16 +126,12 @@ class EditScreen extends React.Component {
 						<Label style={{fontSize: 30, color: 'black', marginTop: 20}}>{"ENTRY DETAILS: "}</Label>
 						<CellGroup>
 							<Cell>
-								<TouchableOpacity onPress={this.onProjectClicked.bind(this)}>
 									<Label style={{color: 'black', fontSize: 20}}>PROJECT</Label>
 									<Label style={{color: '#033C8B', fontSize: 18}}>{this.state.project.name}</Label>
-								</TouchableOpacity>
 							</Cell>
 							<Cell>
-								<TouchableOpacity onPress={this.onActivityClicked.bind(this)}>
 									<Label style={{color: 'black', fontSize: 20}}>ACTIVITY</Label>
 									<Label style={{color: '#033C8B', fontSize: 18}}>{this.state.activity.name}</Label>
-								</TouchableOpacity>
 							</Cell>
 							<Cell>
 								<Label style={{color: 'black', fontSize: 20}}>{"Notes: Description"}</Label>
