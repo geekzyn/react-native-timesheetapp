@@ -15,14 +15,21 @@ class EditScreen extends React.Component {
 		
 		const { item } = this.props.navigation.state.params;
 		
+		var {start_date, end_date} = item;
+
+		if (typeof start_date === 'undefined') {
+			start_date = new Date();
+		} else if (typeof end_date === 'undefined') {
+			end_date = new Date();
+		}
 		this.state = {
-			activityFromTime: new Date(item.start_date),
-			activityToTime: new Date(item.end_date),
+			activityFromTime: new Date(start_date.replace(' ', 'T')),
+			activityToTime: new Date(end_date.replace(' ','T')),
 			activity: item.activity,
 			project: item.activity.project,
 			duration: item.duration,
-			startDate: new Date(item.start_date),
-			endDate: new Date(item.end_date),
+			startDate: new Date(start_date.replace(' ', 'T')),
+			endDate: new Date(end_date.replace(' ', 'T')),
 			description: item.description,
 			id: item.id,
 		};

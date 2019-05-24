@@ -63,6 +63,18 @@ class FlatlistItem extends Component {
 			rowId: this.props.index, 
 			sectionId: 1    
 		}
+		console.log(this.props.item.start_date);
+			const {start_date, end_date} = this.props.item;
+
+			if (typeof start_date === 'undefined') {
+				start_date = new Date();
+			} else if (typeof end_date === 'undefined') {
+				end_date = new Date();
+			}
+			
+			let startTime = new Date(start_date.replace(' ', 'T')).toLocaleTimeString();
+			let endTime = new Date(end_date.replace(' ', 'T')).toLocaleTimeString();
+			
       return (
         <Swipeout {...swipeSettings} style={{backgroundColor: 'white'}}>
 						<TouchableOpacity onPress={this.onItemPress.bind(this, this.props.item)}>
@@ -72,7 +84,7 @@ class FlatlistItem extends Component {
 								<Text style={styles.header}>{this.props.item.activity.project.customer.name}</Text>
 								<Text style={styles.subtitle}>{this.props.item.activity.project.name} </Text>
 								<Text style={styles.subtitle}>{this.props.item.activity.name}</Text>
-								<Text style={[styles.subtitle, {color: 'green'}]}>{new Date(this.props.item.start_date).toLocaleTimeString() +" - "+ new Date(this.props.item.end_date).toLocaleTimeString()}</Text>
+								<Text style={[styles.subtitle, {color: 'green'}]}>{startTime +" - "+ endTime}</Text>
 							</View>
 							<View
 								style={{
@@ -242,7 +254,7 @@ class Timesheet extends Component {
 
 		return ( 
 			<FlatList
-					style={{margin: 10, marginLeft: 20}}
+					style={{margin: 10, marginLeft: 10}}
 					data={this.props.filterTaskList}
 					ItemSeparatorComponent={this.renderSeparator}
 					renderItem={({ item, index }) => (
@@ -325,7 +337,7 @@ const styles = StyleSheet.create({
 	bigBlue: {
 		color: 'blue',
 		fontWeight: 'bold',
-		fontSize: 32
+		fontSize: 20
 	},
 	red: {
 		color: 'red'
@@ -336,11 +348,11 @@ const styles = StyleSheet.create({
 	},
 	header: {
 		color: 'blue',
-		fontSize: 30
+		fontSize: 18
 	},
 	subtitle: {
 		color: 'black',
-		fontSize: 24
+		fontSize: 16
 	}
 	
 
