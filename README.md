@@ -1,2 +1,2 @@
-# Project-Mobile-Apps
-Timesheet Application For Crossplatform Usage
+# Crossplatform Timesheet Application
+Built with React Native
